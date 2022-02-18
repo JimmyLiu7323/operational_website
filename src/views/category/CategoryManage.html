@@ -1,0 +1,70 @@
+
+
+  <title>简单用法 - 数据表格</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+      <a><cite>类目</cite></a>
+      <a><cite>类目管理</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">类目管理</div>
+          <div class="layui-card-body">
+            <table class="layui-hide" id="test-table-simple"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+  layui.use(['admin', 'table'], function(){
+    console.log('hi');
+
+    var unix_timestamp = new Date().getTime();
+    console.log(unix_timestamp);
+    var date = new Date(unix_timestamp * 1000);
+    // Hours part from the timestamp
+    var hours = date.getHours();
+    // Minutes part from the timestamp
+    var minutes = "0" + date.getMinutes();
+    // Seconds part from the timestamp
+    var seconds = "0" + date.getSeconds();
+
+    // Will display time in 10:30:23 format
+    var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+    console.log(formattedTime);
+
+    var date = new Date();
+              
+    // Offset variable will store 
+    // timezone offset between 
+    // UTC and your local time   
+    var offset = date.getTimezoneOffset();
+    console.log(offset);
+
+
+    var table = layui.table;
+  
+    table.render({
+      elem: '#test-table-simple',
+      headers: { //通过 request 头传递
+        'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+      },
+      url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+      //cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+      cols: [[
+         {field:'ID', width:80, title: 'ID', sort: true}
+        ,{field:'Name', width:1230, title: '用户名', sort: true}
+      ]]
+    });
+  });
+  </script>   
+

@@ -1,0 +1,127 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-supplier" style="padding: 20px 0 0 0;">
+  
+  <div class="layui-form-item" style="display: none;">
+    <label class="layui-form-label">ID</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="ID" name="ID" value="{{ d.params.ID || '' }}"  placeholder="请输入供应商名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item" style="width: 300px" lay-filter="sex">
+    <label class="layui-form-label">类目</label>
+    <div class="layui-input-block">
+        <select id="catalog-form" name="CategoryID">
+        </select>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">供应商名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="supplierName" name="Name" value="{{ d.params.Name || '' }}" lay-verify="required" placeholder="请输入供应商名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">联繫人</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="Contacts" value="{{ d.params.Contacts || '' }}" lay-verify="required" placeholder="请输入联繫人" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">联繫电话</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="ContactNumber" value="{{ d.params.ContactNumber || '' }}" lay-verify="" placeholder="请输入联繫电话" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+<!-- 
+  <div class="layui-form-item">
+    <label class="layui-form-label">头像</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="avatar" value="{{ d.params.avatar || '' }}" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input" >
+      </script>
+    </div>
+    <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button> 
+  </div> -->
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline" style="bottom: 40px; right: 30px; position:absolute;">
+      <input type="button" lay-submit lay-filter="LAY-supplier-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d.params)">
+  
+</script>
+
+<script>
+  layui.data.sendParams = function(params){
+  console.log(params) //得到传递过来的 id 参数（或其他参数）值
+  layui.use(['admin', 'form', 'upload'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,form = layui.form
+    ,upload = layui.upload;
+
+  showloading(true);
+  console.log('I am loading');
+    function showloading(t) {
+            if (t) {//如果是true则显示loading
+                console.log(t);
+                loading = layer.msg('加载中', {
+                     icon: 16
+                    ,shade: 0.01
+                  });
+            } else {//如果是false则关闭loading
+                console.log("关闭loading层:" + t);
+                layer.closeAll('loading');
+            }
+        }
+    //通过得到的参数值，做一些你想做的事
+    admin.req({
+    headers: { //通过 request 头传递
+      'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+    },
+    url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+    type: 'get',
+    data: {
+    }
+    ,done: function(result){
+        console.log('form'+result);
+          $.each(result.data, function(index, item) {
+              $('#catalog-form')
+                  .append(new Option(item.Name, item.ID));
+              if(params.CategoryID != '')
+                $('#catalog-form').val(params.CategoryID);
+          });
+          layui.form.render("select");
+          showloading(false);
+      }
+    });
+    
+    //上传头像
+    // upload.render({
+    //   elem: '#layuiadmin-upload-useradmin'
+    //   ,url: './json/upload/demo.js'
+    //   ,accept: 'images'
+    //   ,method: 'get'
+    //   ,acceptMime: 'image/*'
+    //   ,done: function(res){
+    //     $(this.item).prev("div").children("input").val(res.data.src)
+    //   }
+    // });
+  })
+};
+</script>

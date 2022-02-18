@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="utf-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>排版系统</title>
+    <link rel="stylesheet" type="text/css" href="css/parent.css" />
+  </head>
+
+  <body bgcolor="#f8f6f3">
+    <div class="menu">
+      <div class="trophies-preview-images">
+        <div id="basic-preview-container">
+          <div id="preview-images"></div>
+          <div class="trophies-preview-names"></div>
+        </div>
+        <div class="expand-scroll-btn" onclick="expandTrophies(this)">
+          <img src="images/down-arrow.png" class="triangle-image" />
+        </div>
+      </div>
+
+      <div class="list-trophies-container">
+        <div class="list-trophies">
+          <div id="append-list-trophies"></div>
+          <button type="button" class="show-all-btn btn btn-transparent">
+            显示所有产品
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <iframe class="iframe_typesetting" src="trophy_typesetting.html">
+      <p>您的浏览器不支持 iframe 标签。</p>
+    </iframe>
+
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/basic-elements.js"></script>
+    <script>
+      const domain = "http://apitestserverjike.fhlxgzs.cn/";
+      const defaultPreviewPage = 1;
+      let areaW = "100vw";
+      let areaH = "100vh";
+      let loadingTrophies = false;
+      let expandTrophiesScrollTop = 0;
+      let expanding = 0;
+      let previewingTrophy = {
+        id: 0,
+        name: "",
+        length: 0,
+        width: 0,
+        height: 0,
+        image: "",
+      };
+      let trophyPage = 1;
+      let nomoreTrophies = false;
+
+      function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      $(document).ready(function () {
+        // set width and height for fitting any devices
+        areaW = getParameterByName("areaW");
+        areaH = getParameterByName("areaH");
+        if (!areaW || areaW === "") {
+          areaW = "100vw";
+        } else {
+          areaW = areaW + "px";
+        }
+
+        if (!areaH || areaH === "") {
+          areaH = "100vh";
+        } else {
+          areaH = areaH + "px";
+        }
+
+        $("body").css("width", areaW);
+        $("body").css("height", areaH);
+
+        previewTrophies();
+      });
+    </script>
+  </body>
+</html>

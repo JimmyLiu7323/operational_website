@@ -1,0 +1,391 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-userproduct" style="padding: 20px 0 0 0;">
+  
+  <div class="layui-form-item" style="display: none;">
+    <label class="layui-form-label">ID</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="ID" name="ID" value="{{ d.params.ID || '' }}"  placeholder="请输入供应商名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">名称</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="supplierName" name="Name" value="{{ d.params.Name || '' }}" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+     <div class="layui-upload">
+          <button type="button" class="layui-btn" id="test-upload-normal" style="margin-left: 110px; width:190px">上传图片</button>
+          <div class="layui-upload-list">
+            <img class="layui-upload-img" id="test-upload-normal-img">
+            <p id="test-upload-demoText"></p>
+              <script type="text/html" template>
+                <input id="img" type="text" name="Images" value="{{ d.params.Images || '' }}" lay-verify="" placeholder="请上传图片" autocomplete="off" class="layui-input" style="margin-left: 110px; width:190px;display: none;">
+              </script>
+          </div>
+          <div id="imageDiv" style="margin-left: 110px; width:190px"></div>
+      </div> 
+  </div>  
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">尺寸: 長</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Length" name="Length" value="{{ d.params.Length || '' }}" lay-verify="number" placeholder="单位: 毫米" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">宽</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Width" name="Width" value="{{ d.params.Width || '' }}" lay-verify="number" placeholder="单位: 毫米" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">高</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Height" name="Height" value="{{ d.params.Height || '' }}" lay-verify="number" placeholder="单位: 毫米" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">指导价格</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="CostPrice" name="CostPrice" value="{{ d.params.CostPrice || '' }}" lay-verify="number" placeholder="价格" autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item" lay-filter="sex">
+    <label class="layui-form-label">供应商</label>
+    <div class="layui-input-inline">
+        <div id="test-transfer-demo3"></div>
+           <script type="text/html" template>
+                <input id="supplierId" type="text" name="SupplierIDs" value="{{ d.params.SupplierIDs || '' }}" lay-verify="required" placeholder="" autocomplete="off" class="layui-input" style="margin-left: 110px; width:190px; display: none;">
+          </script>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width: 300px; display: none;" lay-filter="sex">
+    <label class="layui-form-label">类目</label>
+    <div class="layui-input-block">
+        <select id="catalog-form" name="CategoryID">
+        </select>
+    </div>
+  </div>
+<!-- 
+  <div class="layui-form-item">
+    <label id="lblDesign" class="layui-form-label" style="width: 100px; margin-right: -10px;display: none">默认设计编号：</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Design" name="Design" value="{{ d.params.Design || '' }}" placeholder="" autocomplete="off" class="layui-input" style="display: none;">
+      </script>
+    </div>
+    <div class="layui-input-inline">
+       <button id="btnDesign" class="layui-btn layuiadmin-btn-productAddForm" style="margin-left: 350px; margin-top: -60px;display: none"  data-type="design">去设计</button>
+    </div>   
+  </div> -->
+
+<!--   <div class="layui-form-item" style="width: 300px" lay-filter="sex">
+    <label class="layui-form-label">供应商</label>
+    <div class="layui-input-block">
+        <select id="supplier-form" name="SupplierIDs">
+        </select>
+    </div>
+    </div>
+  </div> -->
+
+<!-- 
+  <div class="layui-form-item">
+    <label class="layui-form-label">头像</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" name="avatar" value="{{ d.params.avatar || '' }}" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input" >
+      </script>
+    </div>
+    <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button> 
+  </div> -->
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit lay-filter="LAY-product-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d.params)">
+  
+</script>
+
+<script>
+
+  layui.data.sendParams = function(params){
+  console.log('params1');  
+  console.log(params) //得到传递过来的 id 参数（或其他参数）值
+
+
+  showloading(true);
+  function showloading(t) {
+          if (t) {//如果是true则显示loading
+              console.log(t);
+              loading = layer.msg('加载中', {
+                   icon: 16
+                  ,shade: 0.01
+                });
+          } else {//如果是false则关闭loading
+              console.log("关闭loading层:" + t);
+              layer.closeAll('loading');
+          }
+      }      
+
+  console.log('I am loading');
+  layui.use(['admin', 'form', 'upload', 'transfer', 'layer', 'util'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,form = layui.form
+    ,upload = layui.upload
+    ,transfer = layui.transfer
+    ,layer = layui.layer
+    ,util = layui.util
+    ,view = layui.view;
+
+    $('.layui-btn.layuiadmin-btn-productAddForm').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+      //事件
+  var active = {
+    design: function(){      
+      console.log('design');
+      console.log(params);
+      admin.popup({
+        title: '用户设计'
+        ,area: ['600px', '800px']
+        ,id: 'LAY-popup-user-design'
+        ,success: function(layero, index){
+          view(this.id).render('product/trophy_typesetting_index', params).done(function(){
+            form.render(null, 'layuiadmin-form-userproductdesign');
+            
+            //监听提交
+            form.on('submit(LAY-product-submit)', function(data){                  
+              console.log('desginData');
+              console.log(data);
+              //var json = JSON.stringify(data.field); 
+
+              //layui.table.reload('LAY-product-manage'); //重载表格
+              layer.close(index); //执行关闭 
+            });
+          });
+        }
+      });
+    }
+  };
+
+    // if(params.ID != null){
+    //   document.getElementById("Design").style.display = "inline-block";
+    //   document.getElementById("lblDesign").style.display = "inline-block";
+    //   document.getElementById("btnDesign").style.display = "inline-block";
+    // } 
+
+    var selectedValues = [];
+    if(params.SupplierIDs != undefined){
+      if(params.SupplierIDs.length > 0){
+        for(var i = 0; i < params.SupplierIDs.length; i++){
+          selectedValues.push(params.SupplierIDs[i]);
+        }        
+      }
+    }
+    console.log('val: ' + selectedValues);
+    if(params.Images != undefined){
+      if( params.Images.length > 0){      
+        for(var i = 0; i < params.Images.length; i++){
+          var crate_img = document.createElement("IMG");
+          crate_img.setAttribute("src", 'http://apitestserverjike.fhlxgzs.cn' + params.Images[i].substring(1));
+          document.getElementById("imageDiv").appendChild(crate_img);        
+        }
+      }                         
+    }
+
+    admin.req({
+    headers: { //通过 request 头传递
+      'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+    },
+    url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+    type: 'get',
+    data: {
+    }
+    ,done: function(result){
+        console.log('form'+result);
+          $.each(result.data, function(index, item) {
+              $('#catalog-form')
+                  .append(new Option(item.Name, item.ID));
+              if(params.CategoryID != '')
+                $('#catalog-form').val(params.CategoryID);
+          });
+          layui.form.render("select");
+      }
+    });
+    
+
+    //通过得到的参数值，做一些你想做的事
+    admin.req({
+    headers: { //通过 request 头传递
+      'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+    },
+    url: 'http://apitestserverjike.fhlxgzs.cn/suppliers',  
+    type: 'get',
+    data: {'page':1, 'page_size':200},
+    done: function(result){
+             var list = result.data.DataItems; 
+             console.log('list');
+             console.log(list);
+             var jsonObj = {};
+             for (var i = 0; i < result.data.Total; i++) {;
+                  jsonObj[i] = {'value': list[i].ID, 'title': list[i].Name};                  
+             }
+            //console.log(jsonObj);
+         //$.each(result.data, function(index, item) {
+            transfer.render({
+              elem: '#test-transfer-demo3',
+              title: ['未选', '已选'],  //自定义标题
+              data: jsonObj,
+              value: selectedValues,
+              id: 'supplierId', //定义索引
+              parseData:function(res){
+                console.log('parseData');
+                console.log(res);             
+              },
+              onchange: function(obj, index){
+                if(index == 0){
+                  console.log('0');
+                  var str = document.getElementById('supplierId').value;
+                  var arr = str.split(",");
+                  console.log('arrLen:' + arr.length);
+                  var symbol = '';
+                  
+                  var jsonObj = JSON.stringify(obj);
+                  var jsonObj2 = JSON.parse (jsonObj);
+                  //console.log(jsonObj2.length);
+                  for (var i = 0; i < jsonObj2.length; i++) {                      
+                    if(str != '' ){
+                      jsonObj2[i].value = ',' +　jsonObj2[i].value;                 
+                    } else {
+                      if(i < jsonObj2.length-1){
+                        symbol = ',';
+                      }
+                      else{
+                        symbol = '';
+                      }
+                    }                  
+                    $("#supplierId").val(function() {
+                          return this.value + jsonObj2[i].value + symbol;
+                    });
+                  }              
+                } else if(index == 1){  
+                  console.log('1');
+                  var jsonObj = JSON.stringify(obj);
+                  var jsonObj2 = JSON.parse (jsonObj);
+                  //console.log('jsonObj2' + jsonObj2);
+                  var str = document.getElementById('supplierId').value;
+                  if(str != '' && str.includes(',')){
+                    var res = str.split(",");
+                    for(var i = 0; i < jsonObj2.length; i++){
+                      console.log('selected:' + jsonObj2[i].value);
+                      for(var j = 0; j < res.length; j++){
+                        console.log('original:' + res[i]);
+                        if(jsonObj2[i].value == res[j]){
+                          res.splice(j,1);
+                        }   
+                      }                   
+                    }
+                    console.log('res' + res);
+                    //console.log(res);
+                  }
+                  $("#supplierId").val('');
+                  console.log(res);
+                  //console.log('length:' +res.length);
+                  if(res != null){
+                    for (var i = 0; i < res.length; i++) {                    
+                      if(i < res.length-1){
+                        var symbol = ',';
+                      }else if(res.length == 1){
+                        var symbol = ',';
+                      } else {
+                        var symbol = '';
+                      }
+                      $("#supplierId").val(function() {
+                            return this.value + res[i] + symbol;
+                      });
+                    }
+                  }
+                }
+                
+              }
+            });
+          //});
+          //transfer.reload(supplierId, options);
+          showloading(true);
+          console.log('finished loading');
+      }
+    });
+    
+    //普通图片上传
+    var uploadInst = upload.render({
+      elem: '#test-upload-normal',
+        headers: { //通过 request 头传递
+        'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+      },
+      type: 'post',
+      url: 'http://apitestserverjike.fhlxgzs.cn/item_trophies/imgs',
+      before: function(obj){
+        //预读本地文件示例，不支持ie8
+        obj.preview(function(index, file, result){
+          //console.log(result);
+          //result = JSON.stringify(result); 
+          $('#test-upload-normal-img').attr('src', result); //图片链接（base64）
+        });
+      }
+      ,done: function(res){
+        console.log(res);
+        //如果上传失败
+        if(res.code > 0){
+          return layer.msg('上传失败');
+        }
+        else if(res.msg == 'ok'){
+          //上传成功
+          layer.alert('Img has been added successfully');
+          if(params.Images != undefined ){
+            console.log('1');
+            $("#img").val(function() {
+              return this.value + ',' + res.data;
+            });
+          }else{           
+            console.log('2');
+            $("#img").val(function() {
+                return this.value + res.data + ',';
+            });
+          }
+        }
+      }
+      ,error: function(){
+        //演示失败状态，并实现重传
+        var demoText = $('#test-upload-demoText');
+        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+        demoText.find('.demo-reload').on('click', function(){
+          uploadInst.upload();
+        });
+      }
+    });
+  })
+};
+</script>

@@ -1,0 +1,12 @@
+#text-window{display:none;background-color:white;position:absolute;bottom:0;border:1px solid #3C3C3C;padding:5px 10px 0;width:100%;left:0;box-sizing:border-box}
+#text-window .window-row{display:flex;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+#text-window .window-row:nth-child(2){margin-bottom:10px}
+#text-window .window-row .iText-input-container{width:60%;display:flex;align-items:center;flex-wrap:wrap}
+#text-window .window-row .iText-input-container .window-label{width:50px;font-size:.9rem}
+#text-window .window-row .window-btn{width:40%;text-align:right}
+#text-window .window-row .window-btn button{border:1px solid #3C3C3C;border-radius:5px;background-color:white;width:70%;height:35px}
+#text-window .window-row .iText-input-container .window-input{width:calc(100% - 50px)}
+#text-window .window-row .iText-input-container .window-input input,select{width:100%}
+#text-window .window-row .iText-input-container .window-input input{border:1px solid #3C3C3C;height:35px}
+#text-window .window-row .iText-input-container .window-input select{border:1px solid #3C3C3C;height:35px}
+#text-window .window-row .window-text{width:100%;font-size:.8rem}

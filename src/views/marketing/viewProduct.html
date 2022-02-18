@@ -1,0 +1,125 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">商品</a>
+    <a><cite>商品管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-form" lay-filter="layuiadmin-form-viewproduct" style="padding: 20px 0 0 0;">
+  
+  <div class="layui-form-item">
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Data" name="Data" value="{{ d.params.Data || '' }}" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" style="display: none">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item" style="width:300px">
+    <div class="layui-input-inline" style="width:800px; margin-left: 20px">
+      <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+          <div class="layui-col-md12">
+            <div class="layui-card">
+              <div class="layui-card-body">
+                <table class="layui-hide" id="test-table-totalRow" lay-filter="test-table-totalRow"></table>                
+                <script type="text/html" id="test-table-totalRow-toolbarDemo">
+                  <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+                  </div>
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>        
+    </div>
+  </div>
+
+  
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="btn" lay-submit lay-filter="LAY-addMarketing-submit" value="确认" class="layui-btn">
+      <!-- <button class="layui-btn layuiadmin-btn-userproduct" lay-filter="LAY-addMarketing-submit" value="确认" data-type="batchdel"></button> -->   
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use('userproductwithouteditview', layui.factory('userproductwithouteditview')).use(['admin', 'userproductwithouteditview', 'table'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form;
+    
+    // form.render(null, 'layadmin-product-formlist');
+
+    // admin.req({
+    //     headers: { //通过 request 头传递
+    //       'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+    //     },
+    //     url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+    //     type: 'get',
+    //     data: {
+    //     }
+    //     ,done: function(result){
+    //       console.log(result);
+    //         $.each(result.data, function(index, item) {
+    //             $('#catalog')
+    //                 .append(new Option(item.Name, item.ID));
+    //         });
+    //         layui.form.render("select");
+    //     }
+    //   });
+
+    $(document).on('click','#btn',function(){
+    });
+
+
+    //事件
+    var active = {
+      batchdel: function(){
+        var checkStatus = table.checkStatus('test-table-totalRow')
+        ,checkData = checkStatus.data; //得到选中的数据
+        console.log('hi');
+        console.log(checkData);
+        if(checkData.length === 0){
+          return layer.msg('请选择数据');
+        }
+        // layer.prompt({
+        //   formType: 1
+        //   ,title: '敏感操作，请验证口令'
+        // }, function(value, index){
+        //   layer.close(index);
+          
+        //   layer.confirm('确定删除吗？', function(index) {
+            
+        //     //执行 Ajax 后重载
+        //     /*
+        //     admin.req({
+        //       url: 'xxx'
+        //       //,……
+        //     });
+        //     */
+        //     table.reload('LAY-product-manage');
+        //     layer.msg('已删除');
+        //   });
+        // });
+      }
+    };
+    
+    $('.layui-btn.layuiadmin-btn-userproduct').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+  });
+</script>

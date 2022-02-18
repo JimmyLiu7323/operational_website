@@ -1,0 +1,331 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">设计</a>
+    <a><cite>设计管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-product-formlist">              
+      <div class="layui-form-item"> 
+        <div class="layui-inline">
+          <label class="layui-form-label">所有设计</label>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">创建时间：</label>
+          <div class="layui-input-block" id="DropdownCreateTime" lay-filter="component-form-element">
+            <select name="createTime" lay-verify="" id="DropdownCreateTime">
+              <option value="">请选择创建时间</option>
+              <option value="6">最近六个月</option>
+              <option value="12">最近一年</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-inline">          
+          <div class="layui-input-block">
+            <input type="text" name="id" id="productId" placeholder="订单编号/顾客编号" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-ordermanage"  data-type="reload" lay-submit lay-filter="LAY-product-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+   
+    <div class="layui-col-md12">
+      <div class="layui-card">        
+          <div class="layui-tab layui-tab-brief" style="background-color:#f2f2f2;" lay-filter="component-tabs-brief">
+            <ul class="layui-tab-title">
+              <li class="layui-this-title" style="padding-right: 400px">设计内容</li>
+              <li>数量</li>
+              <li>设计人</li>
+              <li>总额</li>
+            </ul>   
+          </div>   
+        </br>
+          <blockquote class="layui-elem-quote">2018-08-13 19:19:02 设计编号：78342850468 顾客编号：456213874987 顾客昵称:null  营销活动来源：2020年母亲节活动</blockquote>
+          <div class="layui-form" wid100 style="border-bottom-width: 1px; border-bottom-style: solid; border-block-start-width: 1px; border-block-start-style: solid;">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <img src="http://apitestserverjike.fhlxgzs.cn/resource/itemimages/item_trophy_48791106200834048.jpg" style="height:116px; width:116px;"></label>
+                <div class="layui-input-inline" style="margin-top:30px; width:300px">
+                  <p>
+                    大拇指奖杯  中国好妈妈  李四 2019年度
+                  </p>
+                  <p>
+                    7 x 7 x 23 厘米
+                  </p>
+                </div>                                
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -20px;">x1</label>         
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -40px;">张三</label>           
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -40px;">￥52.00</label>                                 
+              </div>
+            </div>
+          </div>     
+        </br>  
+          <div class="layui-form" wid100 style="border-bottom-width: 1px; border-bottom-style: solid;border-block-start-width: 1px; border-block-start-style: solid;">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <img src="http://apitestserverjike.fhlxgzs.cn/resource/itemimages/item_trophy_48791106200834048.jpg" style="height:116px; width:116px;"></label>
+                <div class="layui-input-inline" style="margin-top:30px; width:300px">
+                  <p>
+                    大拇指奖杯  中国好妈妈  李四 2019年度
+                  </p>
+                  <p>
+                    7 x 7 x 23 厘米
+                  </p>
+                </div>                                
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -20px;">x1</label>         
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -40px;">张三</label>           
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label" style="margin-left: -40px;">￥52.00</label>                                 
+              </div>
+            </div>
+          </div>      
+        </div>                  
+      </div>          
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header"></div>
+          <div class="layui-card-body">
+            <div id="test-laypage-demo0"></div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script>
+layui.use('ordermanage', layui.factory('ordermanage')).use(['admin', 'ordermanage', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form
+  ,element = layui.element
+  ,router = layui.router();
+
+  var laypage = layui.laypage;
+    
+    //总页数低于页码总数
+    laypage.render({
+      elem: 'test-laypage-demo0'
+      ,count: 50 //数据总数
+      ,jump: function(obj){
+        console.log(obj)
+      }
+    });
+
+  element.render('collapse');
+  
+  //监听折叠
+  element.on('collapse(component-panel)', function(data){
+    layer.msg('展开状态：'+ data.show);
+  });
+  
+  form.render(null, 'layadmin-product-formlist');
+
+  $('#view').on('click', function(event){
+    admin.popup({
+        title: '添加商品'
+        ,area: ['1100px', '800px']
+        ,id: 'LAY-popup-order-details'
+        ,success: function(layero, index){
+          view(this.id).render('order/orderDetails').done(function(){
+            form.render(null, 'layuiadmin-form-ordermanage');
+            })
+          }
+        })
+      })
+      
+            
+            
+
+  admin.req({
+      headers: { //通过 request 头传递
+        'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+      },
+      url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+      type: 'get',
+      data: {
+      }
+      ,done: function(result){
+        console.log(result);
+          $.each(result.data, function(index, item) {
+              $('#catalog')
+                  .append(new Option(item.Name, item.ID));
+          });
+          layui.form.render("select");
+      }
+    });
+
+  //监听搜索
+  form.on('submit(LAY-product-search)', function(data){    
+    var id = $('#productId').val();
+    var name = $('#productName').val();
+    var dic = {};
+    
+    if(id != ''){
+      dic['item_trophy_id'] = id;
+    }
+    else if(name != ''){
+      dic['item_trophy_name'] = name;
+    }
+    else if (Object.keys(dic).length == 0) {
+          dic = null;
+    }
+    //执行重载
+    table.reload('LAY-order-manage', {
+      where: dic
+    });
+  });
+
+
+
+  //事件
+  var active = {
+    batchdel: function(){
+      var checkStatus = table.checkStatus('LAY-order-manage')
+      ,checkData = checkStatus.data; //得到选中的数据
+
+      if(checkData.length === 0){
+        return layer.msg('请选择数据');
+      }
+      
+      layer.prompt({
+        formType: 1
+        ,title: '敏感操作，请验证口令'
+      }, function(value, index){
+        layer.close(index);
+        
+        layer.confirm('确定删除吗？', function(index) {
+          
+          //执行 Ajax 后重载
+          /*
+          admin.req({
+            url: 'xxx'
+            //,……
+          });
+          */
+          table.reload('LAY-order-manage');
+          layer.msg('已删除');
+        });
+      });
+    }
+    ,add: function(){
+      admin.popup({
+        title: '添加商品'
+        ,area: ['550px', '700px']
+        ,id: 'LAY-popup-product-add'
+        ,success: function(layero, index){
+          view(this.id).render('product/productAddForm').done(function(){
+            form.render(null, 'layuiadmin-form-ordermanage');
+            
+            //监听提交
+            form.on('submit(LAY-product-submit)', function(data){                  
+              var json = JSON.stringify(data.field); 
+
+              var jsonObj = JSON.parse(json);
+              //提交 Ajax 成功后，关闭当前弹层并重载表格
+              //$.ajax({});
+              $.ajax({
+                  headers: { //通过 request 头传递
+                    'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                  },
+                  url: 'http://apitestserverjike.fhlxgzs.cn/item_trophies',
+                  dataType: 'json',
+                  data: json,                  
+                  type: "post",                
+                  success: function (response) {
+                    console.log(response);
+                    if(response.msg == 'ok'){                      
+                        layer.open({
+                        content: jsonObj.Name + ' has been successfully added'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }    
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });
+                    }else{
+                      layer.open({
+                        content: 'Something went wrong when saving the record! Please contact Administrator'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });
+                    }                    
+                },
+                error: function(response, textStatus, errorThrown) {
+                  console.log(response);
+                   layer.open({
+                        content: 'Something went wrong when saving the record! Please contact Administrator'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });
+                }
+              });
+              layui.table.reload('LAY-order-manage'); //重载表格
+              layer.close(index); //执行关闭 
+            });
+          });
+        }
+      });
+    }
+  };
+
+  
+  $('.layui-btn.layuiadmin-btn-ordermanage').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>

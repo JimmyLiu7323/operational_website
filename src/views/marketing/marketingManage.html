@@ -1,0 +1,210 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">营销活动</a>
+    <a><cite>营销活动管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-marketingManage-formlist">
+      <div class="layui-form-item">
+
+        <div class="layui-inline">
+          <label class="layui-form-label">渠道：</label>
+          <div class="layui-input-block">
+            <select id="platform" name="platform">
+               <option value="">请选择用戶平台</option>
+               <option value="1">运营端用户</option>
+               <option value="2">绩刻微信小程序</option>
+               <option value="3">绩刻字节跳动小程序</option>
+            </select>
+          </div>
+        </div>
+
+
+
+        <div class="layui-inline">
+          <label class="layui-form-label">创建时间：</label>
+          <div class="layui-input-block">
+              <select id="createTime" name="createTime">
+                  <option value="">请选择创建时间</option>
+                  <option value="6">最近六个月</option>
+                  <option value="12">最近一年</option>
+              </select>
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label" >活动编号</label>
+          <div class="layui-input-block">
+            <input type="text" name="id" id="id" placeholder="请输入" autocomplete="off" class="layui-input" >
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-marketingmanage"  data-type="reload" lay-submit lay-filter="LAY-marketing-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <!-- <div style="padding-bottom: 10px;">
+        <button class="layui-btn layuiadmin-btn-usersupplier" data-type="batchdel">删除</button>
+        <button class="layui-btn layuiadmin-btn-usersupplier" data-type="add">添加</button>
+      </div> -->
+      
+      <table id="LAY-marketing-manage" lay-filter="LAY-marketing-manage"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
+      </script> 
+      <script type="text/html" id="table-marketingManage-webuser">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="view"><i class="layui-icon layui-icon-delete"></i>详情</a>
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use('marketingmanage', layui.factory('marketingmanage')).use(['admin', 'marketingmanage', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form;
+  
+  form.render(null, 'layadmin-marketingManage-formlist');
+
+  //监听搜索
+  form.on('submit(LAY-marketing-search)', function(data){      
+    var marketing_id = $('#id').val();
+    var user_platform = $("select[name='platform']").val();
+    var createTime = $("select[name='createTime']").val();
+
+    var dic = {};
+    
+    if (marketing_id != '') {
+      dic['marketing_id'] = id;
+    }
+    else if(user_platform != ''){
+      dic['user_platform'] = user_platform;
+    } 
+    else if (createTime != '') {
+        var startDate = null;
+        var today = new Date();
+        var endDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var endDatetime = endDate + 'T' + time;
+
+        if (createTime == '6') {
+          //layer.alert(createTime);
+          startDate = today.getFullYear() + '-' + (today.getMonth() + 1 - 6) + '-' + today.getDate();
+          startDatetime = startDate + 'T' + time;
+        }
+        else if (createTime == '12') {
+          startDate = today.getFullYear() - 1 + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+          startDatetime = startDate + 'T' + time;
+        }
+
+        dic['datetime_start'] = startDatetime;
+        dic['datetime_end'] = endDatetime;
+    }
+    else if (Object.keys(dic).length == 0) {
+          dic = null;
+    }
+    //执行重载
+    table.reload('LAY-marketing-manage', {
+      where: dic
+    });
+  });
+
+
+
+  //事件
+  var active = {
+    batchdel: function(){
+      var checkStatus = table.checkStatus('LAY-supplier-manage')
+      ,checkData = checkStatus.data; //得到选中的数据
+
+      if(checkData.length === 0){
+        return layer.msg('请选择数据');
+      }
+      
+      layer.prompt({
+        formType: 1
+        ,title: '敏感操作，请验证口令'
+      }, function(value, index){
+        layer.close(index);
+        
+        layer.confirm('确定删除吗？', function(index) {
+          
+          //执行 Ajax 后重载
+          /*
+          admin.req({
+            url: 'xxx'
+            //,……
+          });
+          */
+          table.reload('LAY-supplier-manage');
+          layer.msg('已删除');
+        });
+      });
+    }
+    ,add: function(){
+      admin.popup({
+        title: '添加用户'
+        ,area: ['450px', '400px']
+        ,id: 'LAY-popup-user-add'
+        ,success: function(layero, index){
+          view(this.id).render('supplier/userform').done(function(){
+            form.render(null, 'layuiadmin-form-supplier');
+            
+            //监听提交
+            form.on('submit(LAY-supplier-submit)', function(data){  
+             // console.log('sup ' + data);           
+              data.field.CategoryID = parseInt(data.field.CategoryID);
+              var json = JSON.stringify(data.field);               
+              console.log(json); 
+              //提交 Ajax 成功后，关闭当前弹层并重载表格
+              //$.ajax({});
+              $.ajax({
+                  headers: { //通过 request 头传递
+                    'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                  },
+                  url: 'http://apitestserverjike.fhlxgzs.cn/suppliers',
+                  dataType: 'json',
+                  data: json,                  
+                  type: "post",                
+                  success: function (response) {
+                    console.log(response);
+                    layer.alert('Supplier ' + response.data.Name + ' has been successfully added');
+                },
+                error: function(response, textStatus, errorThrown) {
+                   console.log(response);
+                   layer.alert('Something went wrong when saving the record! Please contact Administrator');
+                }
+              });
+              layui.table.reload('LAY-supplier-manage'); //重载表格
+              layer.close(index); //执行关闭 
+            });
+          });
+        }
+      });
+    }
+  };
+
+  
+  $('layui-btnlayuiadmin-btn-marketingmanage').on('click', function(){
+    var type = $(this).data('type');
+    layer.allert(type);
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>

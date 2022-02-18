@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="utf-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>排版系统</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/page-decorations.css" />
+    <link rel="stylesheet" type="text/css" href="css/design-window.css" />
+  </head>
+
+  <body bgcolor="#f8f6f3" onload="on_load()">
+    <div id="design_area">
+      <div class="typesetting_background"></div>
+
+      <canvas id="typesetting_canvas"></canvas>
+
+      <div id="float_controler_layer">
+        <div class="trophy-title">大拇指奖杯</div>
+        <div class="trophy-size">规格: <span id="size-txt">7x7x30</span>cm</div>
+        <div class="right-links">
+          <button
+            hover-class="right-button-hover"
+            type="primary"
+            class="btn btn-gray"
+            onclick="print()"
+          >
+            <div class="img-container">
+              <img mode="widthFix" src="images/icons/share.png" />
+            </div>
+            <text>分享</text>
+          </button>
+          <button
+            hover-class="right-button-hover"
+            type="primary"
+            class="btn btn-gray"
+            onclick="save()"
+          >
+            <div class="img-container">
+              <img mode="widthFix" src="images/icons/check.png" />
+            </div>
+            <text>保存</text>
+          </button>
+        </div>
+
+        <div class="left-msgs">
+          <div class="msg-item">
+            <text class="user-name">上善若水: </text>
+            <text class="user-msg"
+              >晶莹剔透，打磨精细，这家做工也太棒了，太喜欢了呢</text
+            >
+          </div>
+        </div>
+
+        <div id="text-window">
+          <div class="window-row">
+            <div class="iText-input-container">
+              <label class="window-label">文本:</label>
+              <div class="window-input">
+                <input id="iText-input" value="中国好爸爸" />
+              </div>
+            </div>
+            <div class="window-btn">
+              <button
+                type="button"
+                class="window-outline-btn"
+                onclick="renewText()"
+              >
+                确定
+              </button>
+            </div>
+          </div>
+          <div class="window-row">
+            <div class="iText-input-container">
+              <label class="window-label">字体:</label>
+              <div class="window-input">
+                <select id="iText-font-family">
+                  <option value="Microsoft SimHei">黑体</option>
+                  <option value="Microsoft SimSun">宋体</option>
+                  <option value="Microsoft LiSu">隶书</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="window-row">
+            <text class="window-text">文字大小由系统自动调整</text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="jquery-3.5.1.min.js"></script>
+  <script src="fabric.min.js"></script>
+  <script src="js/design-functions.js"></script>
+
+  <script>
+    const domain = "http://apitestserverjike.fhlxgzs.cn/";
+    let editingObject = null;
+    let editingTextId = "";
+    let boundingSet = [
+
+    ];
+    let elemSet = {
+        "trophy-main-title":0,
+        "trophy-sub-text1":1,
+        "trophy-sub-text2":1
+    };
+
+    $(document).ready(function () {
+      canvas.on("mouse:down", function (options) {
+        if (options.target) {
+          if (
+            options.target.id === "trophy-main-title" ||
+            options.target.id.indexOf("trophy-sub-text") !== -1
+          ) {
+            editingTextId = options.target.id;
+            setDesignParameter(options);
+            $("#text-window").show();
+          }
+        }
+      });
+    });
+    var canvas = (this.__canvas = new fabric.Canvas("typesetting_canvas"));
+    var All_layers_svg_objs = null;
+    var contour_obj = null;
+    var basePhoto_obj = null;
+    var availableRanges_obj = null;
+    //当svg在屏幕中心位置，正好可以等比例填满屏幕的90%时的视点变换矩阵(CenterViewportTransform)，
+    //及放大比例
+    var CenterViewportTransform = null;
+    var CenterZoomSize = null;
+
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return "";
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function on_load() {
+      canvas.allowTouchScrolling = false;
+      canvas.centeredScaling = true;
+      canvas.enableRetinaScaling = true;
+      canvas.fireRightClick = false;
+      canvas.stopContextMenu = true;
+      canvas.uniformScaling = true;
+      //canvas.svgViewportTransformation = false;
+
+      fabric.Object.prototype.transparentCorners = false;
+      fabric.Object.prototype.originX = fabric.Object.prototype.originY =
+        "center";
+      fabric.Object.prototype.lockScalingFlip = true;
+      // fabric.Object.prototype.originX = 'left'
+      // fabric.Object.prototype.originY = 'top';
+      canvas.snapAngle = 45;
+      canvas.snapThreshold = null;
+      var design_area_dom = document.getElementById("design_area");
+      
+      let renewheight = getParameterByName('height');
+      if(!renewheight||renewheight===''){
+          renewheight = $( window ).height();
+          renewheight -= 20;
+      }
+      else{
+          renewheight = renewheight.replace("px","")
+      }
+
+      canvas.setDimensions(
+        {
+          width: design_area_dom.clientWidth,
+          height: design_area_dom.clientHeight * 0.8,
+        }, //下部0.2用作 广告区和小地图
+        { backstoreOnly: false, cssOnly: false }
+      );
+      var ThumbSize = canvas.width / 40;
+      load_template();
+      calBounding(design_area_dom.clientWidth,renewheight);
+      //console.debug(contour_obj);
+
+      resetDesign();
+    }
+
+    function load_template() {
+      // canvas.add(new fabric.Circle({ radius: 30, fill: '#f55', top: 100, left: 100 }));
+      // canvas.item(0).set({
+      //     borderColor: 'red',
+      //     cornerColor: 'green',
+      //     cornerSize: ThumbSize,
+      //     transparentCorners: false,
+      //     snapAngle: 45,
+      //     snapThreshold: 2,
+      // });
+      fabric.loadSVGFromURL(
+        "template1/All_Layers.svg",
+        function (objects, options) {
+          //分块载入
+          // canvas.renderOnAddRemove = false;
+          // for (let i = 0; i < objects.length; i++) {
+          //   const element = objects[i];
+          //   element
+          //     .set({
+          //       left: canvas.getWidth() / 2,
+          //       top: canvas.getHeight() / 2,
+          //       angle: 0,
+          //     })
+          //     .setCoords();
+          //   canvas.add(element);
+          // }
+          // canvas.renderOnAddRemove = true;
+          // canvas.renderAll();
+          //整块载入
+          var obj = fabric.util.groupSVGElements(objects, options);
+          obj
+            .set({
+              left: canvas.getWidth() / 2,
+              top: canvas.getHeight() / 2,
+              angle: 0,
+            })
+            .setCoords();
+          //obj.center();
+          // .set({
+          //   left: canvas.getWidth() / 2,
+          //   top: canvas.getHeight() / 2,
+          //   angle: 0,
+          // })
+
+          zoom_width = canvas.width / obj.width;
+          zoom_height = canvas.height / obj.height;
+          CenterZoomSize = Math.min(zoom_width, zoom_height) * 0.9;
+          // console.debug(canvas.width, canvas.height);
+          // console.debug(obj.width, obj.height);
+          // console.debug(zoom_width, zoom_height);
+          canvas.zoomToPoint(
+            { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 },
+            CenterZoomSize
+          );
+          canvas.add(obj).renderAll();
+          //obj.viewportCenter();
+
+          canvas.getObjects()[0].toActiveSelection(); //拆分开路径
+          canvas.discardActiveObject();
+          CenterViewportTransform = canvas.viewportTransform;
+
+          All_layers_svg_objs = canvas.getObjects();
+          //按照path的ID来区分开照片、轮廓、可绘制区
+          basePhotos = get_basePhotos();
+          for (let i = 0; i < basePhotos.length; i++) {
+            const element = basePhotos[i];
+            element.set({
+              visible: true,
+              selectable: false,
+            });
+          }
+          contours = get_contours();
+          for (let i = 0; i < contours.length; i++) {
+            const element = contours[i];
+            element.set({
+              visible: false,
+              selectable: false,
+            });
+          }
+          availableRanges = get_availableRanges();
+                console.log('avail: ',availableRanges);
+                for (let i = 0; i < availableRanges.length; i++) {
+                    const element = availableRanges[i];
+                    boundingSet.push({
+                        "top":element.top,
+                        "left":element.left,
+                        "width":element.width,
+                        "height":element.height,
+                        "right":element.left + element.width,
+                        "bottom":element.top + element.height,
+                    });
+                    element.set({
+                        visible: true,
+                        selectable: false,
+                    });
+                }
+                console.log('bounding-set: ',boundingSet);
+        }
+      );
+      canvas.on("mouse:wheel", function (opt) {
+        var delta = opt.e.deltaY;
+        var zoom = canvas.getZoom();
+        zoom *= 0.999 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < CenterZoomSize) zoom = CenterZoomSize;
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+        // var vpt = this.viewportTransform;
+        // if (zoom < 400 / 1000) {
+        //   vpt[4] = 200 - (1000 * zoom) / 2;
+        //   vpt[5] = 200 - (1000 * zoom) / 2;
+        // } else {
+        //   if (vpt[4] >= 0) {
+        //     vpt[4] = 0;
+        //   } else if (vpt[4] < canvas.getWidth() - 1000 * zoom) {
+        //     vpt[4] = canvas.getWidth() - 1000 * zoom;
+        //   }
+        //   if (vpt[5] >= 0) {
+        //     vpt[5] = 0;
+        //   } else if (vpt[5] < canvas.getHeight() - 1000 * zoom) {
+        //     vpt[5] = canvas.getHeight() - 1000 * zoom;
+        //   }
+        // }
+        // console.debug(canvas.calcViewportBoundaries())
+        //console.debug(canvas.restorePointerVpt({"x":100,"y":100}));
+        //canvas.setActiveObject(canvas.item(0), null);
+        //canvas.straightenObject(canvas.item(0));
+        canvas.renderAll();
+        //console.debug(canvas.item(0));
+      });
+      canvas.on("object:moving", function(e){
+            var movingObj = e.target;
+            var movingObj_id = movingObj.id;
+            let movingObjIdx = elemSet[movingObj_id];
+            if(typeof movingObjIdx!=='undefined'){
+                let findBounding = boundingSet[movingObjIdx];
+
+                if(movingObj.left < findBounding['left']){
+                    movingObj.set('left',findBounding['left']);
+                }
+                else if(movingObj.left + movingObj.width > findBounding['right']){
+                    movingObj.set('left',(findBounding.left + findBounding.right)/2);
+                }
+
+                if(movingObj.top < findBounding['top']){
+                    movingObj.set('top',findBounding['top']);
+                }
+                else if(movingObj.top + movingObj.height > findBounding['bottom']){
+                    movingObj.set('top',findBounding['bottom'] - movingObj['height']);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取所有轮廓
+     */
+    function get_contours() {
+      var result = [];
+      for (let i = 0; i < All_layers_svg_objs.length; i++) {
+        const element = All_layers_svg_objs[i];
+        if (element.id.toLowerCase().includes("contour")) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 获取所有基础照片
+     */
+    function get_basePhotos() {
+      var result = [];
+      for (let i = 0; i < All_layers_svg_objs.length; i++) {
+        const element = All_layers_svg_objs[i];
+        if (element.id.toLowerCase().includes("basephoto")) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 获取所有可编辑区域
+     */
+    function get_availableRanges() {
+      var result = [];
+      for (let index = 0; index < All_layers_svg_objs.length; index++) {
+        const element = All_layers_svg_objs[index];
+        if (element.id.toLowerCase().includes("availablerange")) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 设置视图模式
+     * normal:正常模式，基础图片可见，轮廓不可见，可编辑区域选框不可见，文案可见
+     * select_available_range:可编辑区选择模式，缩放恢复到填满画布的状态，基础图片不可见，轮廓可见可编辑区域选框可见，文案不可见，
+     */
+    function set_view_model(modelName) {
+      if (modelName === "normal") {
+        base_photos_all = get_basePhotos();
+        for (let i = 0; i < base_photos_all.length; i++) {
+          const element = base_photos_all[i];
+          element.set({ visible: true });
+        }
+        contours_all = get_contours();
+        for (let i = 0; i < contours.length; i++) {
+          const element = contours[i];
+          element.set({ visible: false });
+        }
+        available_ranges_all = get_availableRanges();
+        for (let i = 0; i < available_ranges_all.length; i++) {
+          const element = available_ranges_all[i];
+          element.set({ visible: false });
+        }
+      }
+      if (modelName === "select_available_range") {
+        canvas.discardActiveObject();
+        canvas.setViewportTransform(CenterViewportTransform);
+        base_photos_all = get_basePhotos();
+        for (let i = 0; i < base_photos_all.length; i++) {
+          const element = base_photos_all[i];
+          element.set({ visible: true });
+        }
+        contours_all = get_contours();
+        for (let i = 0; i < contours.length; i++) {
+          const element = contours[i];
+          element.set({ visible: true });
+        }
+        available_ranges_all = get_availableRanges();
+        console.log('available_ranges_all');
+        console.log(available_ranges_all);
+        for (let i = 0; i < available_ranges_all.length; i++) {
+          const element = available_ranges_all[i];
+          element.set({ visible: true });
+        }
+      }
+    }
+
+    function print() {
+      // console.log("button click");
+        available_ranges_all = get_availableRanges();
+        console.log('available_ranges_all');
+        console.log(available_ranges_all);
+      //set_view_model("normal");
+      set_view_model("select_available_range");
+    }
+
+    function save() {
+      canvas.discardActiveObject();
+      canvas.setViewportTransform(CenterViewportTransform);
+      canvas.renderAll();
+      var target_svg = canvas.toSVG({
+        // viewBox: {
+        //     x: 100,
+        //     y: 100,
+        //     width: 200,
+        //     height: 300
+        // }
+        suppressPreamble: true,
+      });
+      console.debug(target_svg);
+    }
+  </script>
+</html>

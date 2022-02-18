@@ -1,0 +1,102 @@
+#sku_name {
+  font-size: 1rem;
+  color: white;
+  position: relative;
+  z-index: 5;
+}
+
+#design_area .trophy-title {
+  font-size: 1rem;
+  color: white;
+  position: absolute;
+  z-index: 5;
+  left: 10px;
+  max-width: 50%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#design_area .trophy-size {
+  background-color: #53565c;
+  opacity: 0.6;
+  color: white;
+  border-radius: 15px;
+  display: inline-block;
+  font-size: 0.85rem;
+  padding: 5px 15px;
+  position: absolute;
+  z-index: 5;
+  top: 35px;
+  left: 10px;
+}
+
+#design_area .left-msgs {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 75%;
+}
+#design_area .msg-item {
+  border-radius: 6px;
+  background-color: rgba(94, 101, 107, 0.5);
+  color: white;
+  font-size: 0.7rem;
+  padding: 3px;
+  margin: 5px 0;
+  border-radius: 10px;
+  padding: 5px 15px;
+}
+#design_area .msg-item .user-name {
+  margin-right: 3px;
+}
+#design_area .msg-item:nth-child(odd) .user-name {
+  color: rgb(247, 206, 0);
+}
+#design_area .msg-item:nth-child(even) .user-name {
+  color: rgb(247, 206, 0);
+}
+
+#design_area .right-links {
+  position: absolute;
+  right: 5px;
+  width: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+#design_area .right-links img {
+  width: 50%;
+}
+#design_area .right-links button {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  width: 35px;
+  margin: 0 5px;
+}
+#design_area .right-links button .img-container {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid white;
+  padding: 0;
+  box-sizing: border-box;
+  padding-top: 10px;
+}
+#design_area .right-links > button:nth-child(1) .img-container {
+  background-color: rgb(255, 41, 37);
+}
+#design_area .right-links > button:nth-child(2) .img-container {
+  background-color: rgb(255, 211, 0);
+  padding-top: 8px;
+}
+#design_area .right-links button text {
+  display: block;
+  font-size: 0.75rem;
+  width: 100%;
+  text-align: center;
+  margin-top: 3px;
+  color: white;
+}

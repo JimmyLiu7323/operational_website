@@ -1,0 +1,796 @@
+<title>网站用户</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">营销活动</a>
+    <a><cite>新建营销活动</cite></a>
+  </div>
+</div>
+
+<div class="layui-form" lay-filter="layuiadmin-form-addMarketingActivity" style="padding: 20px 0 0 0;">
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">名称：</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="marketingActivityName" name="Name" value="{{ d.params.Name || '' }}" lay-verify="required" placeholder="名称" autocomplete="off" class="layui-input" readonly>
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="ArrList" name="ArrList" value="{{ d.params.ArrList || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Image" name="Image" value="{{ d.params.Image || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="ProductName" name="ProductName" value="{{ d.params.ProductName || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="CostPrice" name="CostPrice" value="{{ d.params.CostPrice || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Quantity" name="Quantity" value="{{ d.params.Quantity || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+   <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="AllowDisplayOfAllItemsJumpLink" name="AllowDisplayOfAllItemsJumpLink" value="{{ d.params.AllowDisplayOfAllItemsJumpLink || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+
+   <div class="layui-form-item">
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="Default" name="Default" value="{{ d.params.Default || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item" >
+    <label class="layui-form-label" style="display: none"></label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <input type="text" id="AdArr" name="AdArr" value="{{ d.params.AdArr || '' }}" style="display: none" lay-verify="required"  class="layui-input">
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-fluid layadmin-cmdlist-fluid" style="margin-top: -200px">
+      <div id="theDiv" class="layui-row layui-col-space30">
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-fluid layadmin-cmdlist-fluid" style="margin-top: -200px">
+      <div id="theDiv2" class="layui-row layui-col-space30">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">商品列表：</label>
+    <div class="layui-input-inline">
+      <button class="layui-btn layuiadmin-btn-usermarketactivity" data-type="add" disabled>添加商品</button>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">用户平台：</label>
+    <div class="layui-input-inline" style="width:auto">
+
+      <select id="UserPlatform" name="UserPlatform"  lay-verify="required" disabled>
+     <!--     <option value="">请选择用戶平台</option>
+         <option value="1">运营端用户</option>
+         <option value="2">绩刻微信小程序</option>
+         <option value="3">绩刻字节跳动小程序</option> -->
+      </select>
+
+    </div>
+    <label class="layui-form-label">活动状态：</label>
+    <div class="layui-input-inline" style="width:auto">
+        <select id="ActiveStatus" name="ActiveStatus"  lay-verify="required" disabled>
+       <!--   <option value=""></option>
+         <option value="1">活动中</option>
+         <option value="2">已下线</option>  -->        
+      </select>
+    </div>
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline" style="width:auto">
+      <input type="checkbox" id="AllowProductLink"  name="" title="允许展示所有商品跳转链接" disabled>
+    </div>
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline" style="width:auto">
+      <input type="checkbox" id="DefaultAct" name="" title="默认活动" disabled>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+      <div class="layui-input-inline" style="width:auto">
+        <label style="display: none">广告词：<div id="AdDiv" style="display: none; overflow-wrap: break-word;">  </div> </label>
+      </div>
+  </div>
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+      <div class="layui-input-inline"  style="width:auto; margin-right: auto">
+          <textarea id="edit" class="edit" style="display: none"></textarea>
+        </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input id="AddText" type="button"  value="添加" class="layui-btn" style="display: none" disabled>
+    </div>
+  </div>
+
+
+
+  <div class="layui-form-item" style="margin-left: 600px; margin-top:-200px; display:inline-block;">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input id="confirm" type="button" lay-submit lay-filter="LAY-marketing-submit" style="margin-top:-50px;display:inline-block;" value="确认" class="layui-btn layuiadmin-btn-usermarketactivity" data-type="confirm">
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendParams(d.params)">
+  
+</script>
+<script>
+  layui.data.sendParams = function(params){
+  console.log('params')
+  console.log(params) //得到传递过来的 id 参数（或其他参数）值
+  layui.use('usermarketactivity', layui.factory('usermarketactivity')).use(['admin', 'usermarketactivity', 'table', 'tinymce'], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , view = layui.view
+      , table = layui.table
+      , form = layui.form;    
+    
+    form.render(null, 'layuiadmin-form-addMarketingActivity');
+
+
+    // layui.tinymce.render({
+    //   elem: "#edit",
+    //   // 支持tinymce所有配置 
+    //   language: 'zh_CN',//语言
+    //   height: 300,//编辑器高度  
+    //   plugins: [
+    //     'table advlist autolink lists link charmap print preview hr anchor pagebreak',
+    //     'wordcount visualblocks visualchars code fullscreen',
+    //     'insertdatetime nonbreaking save table contextmenu directionality',
+    //     'emoticons textcolor colorpicker textpattern image code codesample toc pagebreak'
+    //   ],
+    //   toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image |forecolor backcolor emoticons ',
+    // }, (opt, edit) => {
+    //   // 加载完成后回调 opt 是传入的所有参数
+    //   // edit是当前编辑器实例，等同于t.get返回值
+    // });
+    // layui.tinymce.reload({
+    // elem:'#edit'
+    // // 除elem外，所有参数都可以重新设置
+    // },(opt, edit) => {
+    //     //重载完成后回调函数，会把所有参数回传，
+    //     //重载仅仅重新渲染编辑器，不会清空textarea
+    // })
+
+    var select = document.getElementById('UserPlatform');
+    var val1 = ['运营端用户','绩刻微信小程序','绩刻字节跳动小程序']
+    for (var i = 0; i<=2; i++){
+      console.log(val1[i]);
+        var opt = document.createElement('option');
+        opt.value = i+1;
+        opt.innerHTML = val1[i];
+        select.appendChild(opt);
+    }
+     layui.form.render("select");
+
+    var select = document.getElementById('ActiveStatus');
+    var val2 = ['活动中','已下线']
+    for (var i = 0; i<=1; i++){
+      console.log(val2[i]);
+        var opt = document.createElement('option');
+        opt.value = i+1;
+        opt.innerHTML = val2[i];
+        select.appendChild(opt);
+    }
+     layui.form.render("select")
+
+    
+   
+    var myArr = new Array(), preMyArrLength = 0, num = 0, adArr = [], productNameList = {}, costPriceList = {}, quantityList = {}, imageList={};
+     if(params.ID != null){
+      console.log('having value');
+       var order = new Array(), index = 0;
+       async function log(url) { 
+          return await 
+            $.ajax({
+              headers: { //通过 request 头传递
+                'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+              },
+              async: false,
+              cache: false,
+              url: url,            
+              dataType: 'json',                
+              type: 'get', 
+            })
+            .then(function(response) {
+              console.log('response');
+              console.log(response);
+              order.push(response.data);  
+                $.ajax({
+                  headers: { //通过 request 头传递
+                    'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                  },
+                  async: false,
+                  cache: false,
+                  url: 'http://apitestserverjike.fhlxgzs.cn/item_trophies?item_trophy_id=' +response.data.ItemID ,
+                  dataType: 'json',
+                })
+                .then(function(result) {
+                  myArr = order;                      
+                  console.log('myArr');
+                  console.log(myArr);
+                  console.log('result');
+                  console.log(result);   
+
+                $('#theDiv2').append('<div id="sku' + index + '" class="layui-col-md2 layui-col-sm4"><div class="cmdlist-container"><div class="layui-input-inline" ><img id="Images' + index + '" src="' + 'http://apitestserverjike.fhlxgzs.cn' + response.data.ImageUrl + '"  style="width: 200px; height: 200px;"> <div class="cmdlist-text" style="margin-left:10px"><p class="info" style="width:200px"> <label id="labelName' + index + '">名称：</label> <input type="text" id="Name' + index + '" lay-verify="required" value="' +response.data.Name + '"  style="width:100px" disabled/></p><div class="price"><p><label id="labelFixPrice' + index + '">价格：</label> <input type="text" id="FixPrice' + index + '" lay-verify="required" value="'+response.data.CostPrice+'" style="width:100px" disabled/></p><p><label id="labelCostPrice' + index + '">指导价格：' + result.data.DataItems[0].CostPrice + '</label> </p><p> <label label id="labelStock' + index + '">库存：</label> <input type="text" lay-verify="required" id="Stock' + index + '" value="'+response.data.Quantity+'" style="width:100px" disabled /></p><form id="myForm' + index + '">初始设计：<input type="radio" lay-ignore id="defaultRadio_' + index + '" value="defaultRadio_' + index + '" name="role" style="display:inline-block" disabled checked>默认<input id="defineRadio_' + index + '" value="defineRadio_' + index + '" name="role" type="radio" lay-ignore style="display:inline-block" disabled>自定义</form><p><label id="labelDesign' + index + '">自定义设计编号：</label><a id="link' + index + '" href="url" style="color:blue;display:none">去設計</a></p><p><input type="text" id="DesignId' + index + '" style="width:150px;" readonly/></p><p><button id="delete' + index + '" style="width:70px;margin:auto;display:none">删除</button></p></div></div></div></div></div>');                           
+                              
+                  productNameList[index] = response.data.Name; 
+                  console.log('productNameList');
+                  console.log(productNameList);
+
+                  costPriceList[index] = response.data.CostPrice;                  
+                  console.log('costPriceList');
+                  console.log(costPriceList);
+
+                  quantityList[index] = response.data.Quantity;                
+                  console.log('quantityList');
+                  console.log(quantityList);
+
+                 var divsToHide = document.getElementsByClassName("layui-col-md2 layui-col-sm4");
+                 divsToHide[index].style.margin = "10px 100px 0 0";                        
+
+                 $("#Name" + index).on('change keydown paste input', function(e){                        
+                        var id = e.target.id.replace( /^\D+/g, '');
+                        productNameList[id] = e.target.value;
+                        console.log('productNameList');
+                        console.log(productNameList);
+                  });
+
+                 $("#FixPrice" + index).on('change keydown paste input', function(e){
+                        var id = e.target.id.replace( /^\D+/g, '');
+                        costPriceList[id] = e.target.value;
+                        console.log('costPriceList');
+                        console.log(costPriceList);
+                  });
+
+                 $("#Stock" + index).on('change keydown paste input', function(e){
+                        var id = e.target.id.replace( /^\D+/g, '');
+                        quantityList[id] = e.target.value;
+                        console.log('quantityList');
+                        console.log(quantityList);
+                  });
+
+                 $('#myForm' + index + ' input').on('change', function (e) {
+                    var clickVal = $('input[name=role]:checked', '#myForm' + e.target.id.replace( /^\D+/g, '') + '').val();
+                    if (clickVal.includes("define")) {
+                      document.getElementById("link" + e.target.id.replace( /^\D+/g, '')).style.display = "inline-block";
+                    } else {
+                      document.getElementById("link" + e.target.id.replace( /^\D+/g, '')).style.display = "none";
+                    }
+                  });
+
+                $('#delete' + index + '').on('click', function (e) {
+                  id = e.target.id.replace( /^\D+/g, '');
+                  alert(id);
+                  if (confirm("Are You Sure to delete?")) {
+                    var sku = document.getElementById("sku" + id);
+                    var img = document.getElementById("Images" + id);
+                    var name = document.getElementById("Name" + id);
+                    var fixPrice = document.getElementById("FixPrice" + id);
+                    var stock = document.getElementById("Stock" + id);
+                    var myForm = document.getElementById("myForm" + id);
+                    var defaultRadio = document.getElementById("defaultRadio_" + id);
+                    var defineRadio = document.getElementById("defineRadio_" + id);
+                    var link = document.getElementById("link" + id);
+                    var designId = document.getElementById("DesignId" + id);
+                    var del = document.getElementById("delete" + id);
+                    var labelName = document.getElementById("labelName" + id);
+                    var labelFixPrice = document.getElementById("labelFixPrice" + id);
+                    var labelCostPrice = document.getElementById("labelCostPrice" + id);
+                    var labelStock = document.getElementById("labelStock" + id);
+                    var labelDesign = document.getElementById("labelDesign" + id);
+                    img.remove(img); name.remove(name); fixPrice.remove(fixPrice); designId.remove(designId);
+                    stock.remove(stock); myForm.remove(myForm); defaultRadio.remove(defaultRadio);
+                    defineRadio.remove(defineRadio); link.remove(link); del.remove(del);
+                    labelName.remove(labelName); labelFixPrice.remove(labelFixPrice); labelCostPrice.remove(labelCostPrice);
+                    labelStock.remove(labelStock); labelDesign.remove(labelDesign);sku.remove(sku);
+
+                    myArr[id].isDelete = true;
+                    console.log('jimTest');
+                    console.log(myArr);
+                  }
+                });          
+                index++;
+                preMyArrLength = order.length;
+                console.log('preMyArrLength');
+                console.log(preMyArrLength);
+                });
+            });
+        }
+
+        async function run() {
+          for(var i = 0; i < params.SkuIDs.length; i++) {
+            await log('http://apitestserverjike.fhlxgzs.cn/marketing_trophy_skus?sku_id='+params.SkuIDs[i]);
+          }
+          console.log('params');
+          console.log(params);
+          document.getElementById('UserPlatform').value = params.UserPlatform;
+          if(params.IsActive){
+            document.getElementById('ActiveStatus').value = 1;
+          }else{
+            document.getElementById('ActiveStatus').value = 2;
+          }
+          layui.form.render("select");
+
+         for(var j = 0; j < params.Advertisements.length; j++) {
+             adArr.push(params.Advertisements[j]);
+            $('#AdDiv').append('<div id="adLabel'+j+'" style="float: left; margin-right: 10px">' + params.Advertisements[j] + '</div> <div id="mdiv'+j+'" style="width: 20px;height: 20px;background-color: red;margin-right: 10px;border: 1px solid black;float: left;"><div class="mdiv'+j+'" style="height: 22px;width: 2px;margin-left: 13px;background-color: black;transform: rotate(45deg);Z-index: 1;"><div class="md" style="height: 25px;width: 2px;background-color: black;transform: rotate(90deg);Z-index: 2;"></div></div></div>');
+             var element = document.getElementById('mdiv'+j); // grab a reference to your element
+             element.addEventListener('click', clickDelHandler);
+             function clickDelHandler(){ // declare a function that updates the state                
+                if (confirm("Are You Sure to delete " + $("#adLabel"+ this.id.replace( /^\D+/g, '')).text() + "?")) {
+                    var adLabel = document.getElementById("adLabel" + this.id.replace( /^\D+/g, ''));
+                    var mdiv = document.getElementById("mdiv" + this.id.replace( /^\D+/g, ''));
+                    adLabel.remove(adLabel);
+                    mdiv.remove(mdiv);
+                }          
+              }          
+              num++;
+              console.log('num');
+              console.log(num);         
+          }        
+        }
+        run();
+      }
+    
+    function reloadPage() {
+      // The last "domLoading" Time //
+      var currentDocumentTimestamp =
+      new Date(performance.timing.domLoading).getTime();
+      // Current Time //
+      var now = Date.now();
+      // Ten Seconds //
+      var tenSec = 2 * 1000;
+      // Plus Ten Seconds //
+      var plusTenSec = currentDocumentTimestamp + tenSec;
+      if (now > plusTenSec) {
+      location.reload();
+      } else {}
+    }
+    //reloadPage();
+
+    $('#AddText').on('click', function (e) {
+      //alert(num);
+      var AdText = window.parent.tinymce.get('edit').getContent();
+      adArr.push(AdText);
+      $('#AdDiv').append('<div id="adLabel'+num+'" style="float: left; margin-right: 10px">' + AdText + '</div> <div id="mdiv'+num+'" style="width: 20px;height: 20px;background-color: red;margin-right: 10px;border: 1px solid black;float: left;"><div class="mdiv'+num+'" style="height: 22px;width: 2px;margin-left: 13px;background-color: black;transform: rotate(45deg);Z-index: 1;"><div class="md" style="height: 25px;width: 2px;background-color: black;transform: rotate(90deg);Z-index: 2;"></div></div></div>');
+
+         var element = document.getElementById('mdiv'+num); // grab a reference to your element
+         element.addEventListener('click', clickDelHandler);
+
+         function clickDelHandler(){ // declare a function that updates the state                
+          if (confirm("Are You Sure to delete " + $("#adLabel"+ this.id.replace( /^\D+/g, '')).text() + "?")) {
+              var adLabel = document.getElementById("adLabel" + this.id.replace( /^\D+/g, ''));
+              var mdiv = document.getElementById("mdiv" + this.id.replace( /^\D+/g, ''));
+              adLabel.remove(adLabel);
+              mdiv.remove(mdiv);
+          }          
+        }
+        num++;
+    });
+
+
+    //事件
+    var active = {
+      batchdel: function () {
+        var checkStatus = table.checkStatus('LAY-user-manage')
+          , checkData = checkStatus.data; //得到选中的数据
+
+        if (checkData.length === 0) {
+          return layer.msg('请选择数据');
+        }
+
+        layer.prompt({
+          formType: 1
+          , title: '敏感操作，请验证口令'
+        }, function (value, index) {
+          layer.close(index);
+
+          layer.confirm('确定删除吗？', function (index) {
+            table.reload('LAY-user-manage');
+            layer.msg('已删除');
+          });
+        });
+      }
+      , add: function () {          
+        admin.popup({
+          title: '添加商品'
+          , area: ['900px', '650px']
+          , id: (params.ID == null) ? 'LAY-popup-user-add' : 'LAY-popup-user-add2'
+          , success: function (layero, index) {
+            view(this.id).render('marketing/viewProduct').done(function () {
+              console.log('hit');
+              form.render(null, 'layuiadmin-form-viewproduct');
+
+              //监听提交
+              form.on('submit(LAY-addMarketing-submit)', function (data) {
+                console.log(data.field.Data);
+               
+                var obj = JSON.parse(data.field.Data);                                                             
+                console.log('obj');
+                console.log(obj);  
+                console.log('myArr');
+                console.log(myArr);              
+                console.log('order');
+                console.log(order);
+
+                for (var i = 0; i < obj.length; i++) {
+                  myArr.push(obj[i]);
+                }        
+
+
+                console.log('myArr');
+                console.log(myArr);
+                console.log(myArr.length);
+                
+                //console.log(obj.length);
+                
+                var startIndex = 0; 
+                if(params.ID == null){
+                  if(obj.length == myArr.length){
+                    startIndex = 0;
+                  } else{
+                    console.log('preMyArrLength1');
+                    console.log(preMyArrLength);
+                    startIndex =  preMyArrLength;
+                  }
+                }else{
+                  console.log('preMyArrLength2');
+                  console.log(preMyArrLength);  
+                  startIndex =  preMyArrLength;
+                }
+
+                if(myArr.length != 0){
+                  if(preMyArrLength != myArr.length){
+                    preMyArrLength = myArr.length ;
+                    console.log('preMyArrLength3');
+                    console.log(preMyArrLength);                    
+                  }                  
+                }
+
+                console.log('startIndex');
+                console.log(startIndex);
+                console.log(myArr);
+                var appendClass='';
+                  for (var i = startIndex; i < myArr.length; i++) {      
+                    if(params.ID != null){
+                        appendClass = 'class="layui-col-md2 layui-col-sm4" style="margin-top:10px; margin-right:100px"'
+                    }else{
+                      appendClass = 'class="layui-col-md2 layui-col-sm4"';
+                    }                              
+                    $('#theDiv').append('<div id="sku' + i + '" '+appendClass+' ><div class="cmdlist-container"><div class="layui-input-inline"><img id="Images' + i + '" src="' + 'http://apitestserverjike.fhlxgzs.cn' + myArr[i].Images[0].substring(1) + '"  style="width: 200px; height: 200px;"> <div class="cmdlist-text" style="margin-left:10px"><p class="info" style="width:200px"> <label id="labelName' + i + '">名称：</label> <input type="text" id="Name' + i + '" lay-verify="required" value="' + myArr[i].Name + '" style="width:100px" /></p><div class="price"><p><label id="labelFixPrice' + i + '">价格：</label> <input type="text" lay-verify="required" id="FixPrice' + i + '" style="width:100px" /></p><p><label id="labelCostPrice' + i + '">指导价格：' + myArr[i].CostPrice + '</label> </p><p> <label label id="labelStock' + i + '">库存：</label> <input type="text" lay-verify="required" id="Stock' + i + '" style="width:100px" /></p><form id="myForm' + i + '">初始设计：<input type="radio" id="defaultRadio_' + i + '" value="defaultRadio_' + i + '" name="role" style="display:inline-block" checked>默认<input id="defineRadio_' + i + '" value="defineRadio_' + i + '" name="role" type="radio" style="display:inline-block">自定义</form><p><label id="labelDesign' + i + '">自定义设计编号：</label><a id="link' + i + '" href="url" style="color:blue;display:none">去設計</a></p><p><input type="text" id="DesignId' + i + '" style="width:150px;" readonly/></p><p><button id="delete' + i + '" style="width:70px;margin:auto;display:block">删除</button></p></div></div></div></div></div>');
+
+                    if(params.ID != null){
+                        imageList[i] = myArr[i].Images[0].substring(1);
+                        console.log('imageList');
+                        console.log(imageList);
+
+                        productNameList[i] = myArr[i].Name; 
+                        console.log('productNameList');
+                        console.log(productNameList);
+
+                        costPriceList[i] = '';                  
+                        console.log('costPriceList');
+                        console.log(costPriceList);
+
+                        quantityList[i] = '';                
+                        console.log('quantityList');
+                        console.log(quantityList);                                           
+
+                       $("#Name" + i).on('change keydown paste input', function(e){                        
+                              var id = e.target.id.replace( /^\D+/g, '');
+                              productNameList[id] = e.target.value;
+                              console.log('productNameList');
+                              console.log(productNameList);
+                        });
+
+                       $("#FixPrice" + i).on('change keydown paste input', function(e){
+                              var id = e.target.id.replace( /^\D+/g, '');
+                              costPriceList[id] = e.target.value;
+                              console.log('costPriceList');
+                              console.log(costPriceList);
+                        });
+
+                       $("#Stock" + i).on('change keydown paste input', function(e){
+                              var id = e.target.id.replace( /^\D+/g, '');
+                              quantityList[id] = e.target.value;
+                              console.log('quantityList');
+                              console.log(quantityList);
+                        });
+                    }
+             
+                    $('#myForm' + i + ' input').on('change', function (e) {
+                      var clickVal = $('input[name=role]:checked', '#myForm' + e.target.id.replace( /^\D+/g, '') + '').val();
+                      if (clickVal.includes("define")) {
+                        document.getElementById("link" + e.target.id.replace( /^\D+/g, '')).style.display = "inline-block";
+                      } else {
+                        document.getElementById("link" + e.target.id.replace( /^\D+/g, '')).style.display = "none";
+                      }
+                    });
+
+
+                    $('#delete' + i + '').on('click', function (e) {
+                      id = e.target.id.replace( /^\D+/g, '');
+                      alert(id);
+                      if (confirm("Are You Sure to delete?")) {
+                        var sku = document.getElementById("sku" + id);
+                        var img = document.getElementById("Images" + id);
+                        var name = document.getElementById("Name" + id);
+                        var fixPrice = document.getElementById("FixPrice" + id);
+                        var stock = document.getElementById("Stock" + id);
+                        var myForm = document.getElementById("myForm" + id);
+                        var defaultRadio = document.getElementById("defaultRadio_" + id);
+                        var defineRadio = document.getElementById("defineRadio_" + id);
+                        var link = document.getElementById("link" + id);
+                        var designId = document.getElementById("DesignId" + id);
+                        var del = document.getElementById("delete" + id);
+                        var labelName = document.getElementById("labelName" + id);
+                        var labelFixPrice = document.getElementById("labelFixPrice" + id);
+                        var labelCostPrice = document.getElementById("labelCostPrice" + id);
+                        var labelStock = document.getElementById("labelStock" + id);
+                        var labelDesign = document.getElementById("labelDesign" + id);
+                        img.remove(img); name.remove(name); fixPrice.remove(fixPrice); designId.remove(designId);
+                        stock.remove(stock); myForm.remove(myForm); defaultRadio.remove(defaultRadio);
+                        defineRadio.remove(defineRadio); link.remove(link); del.remove(del);
+                        labelName.remove(labelName); labelFixPrice.remove(labelFixPrice); labelCostPrice.remove(labelCostPrice);
+                        labelStock.remove(labelStock); labelDesign.remove(labelDesign);sku.remove(sku);
+
+                        myArr[id].isDelete = true;
+                        console.log('jimTest');
+                        console.log(myArr);
+                      }
+                    });
+                  };                        
+                // var myobj = document.getElementById("Images0");
+                // myobj.remove(myobj);
+
+                // //layui.table.reload('LAY-user-manage'); //重载表格
+                layer.close(index); //执行关闭 
+              });
+            });
+          }
+        });
+      }
+      , confirm: function () {   
+        var Name = $('#marketingActivityName').val();
+        
+        if(myArr == '' || Name == ''){
+          layer.alert('Name or Product is empty');
+        }else{                  
+          console.log('start loop on validation');
+          console.log(myArr); 
+          var isInputValid = false;  
+          for(var i = 0; i < myArr.length; i++){     
+                if(!myArr[i].isDelete){
+                  if($('#FixPrice' + i).val() == ''){
+                    layer.alert($('#Name' + i).val() + ' Fix Price has not fill in the price');
+                    break;
+                  } else if(!isInt($('#FixPrice' + i).val()) && !isFloat($('#FixPrice' + i).val())){
+                    layer.alert($('#Name' + i).val() + ' Fix Price can only enter number');
+                    break;
+                  }
+
+                  if($('#Stock' + i).val() == ''){
+                    layer.alert($('#Name' + i).val() + ' Stock has not fill in the quantity');
+                    break;
+                  }else if(!isInt($('#Stock' + i).val())){
+                    layer.alert($('#Name' + i).val() + ' Stock can only enter number');
+                    break;
+                  } else{
+                    if(i +1 == myArr.length){
+                      isInputValid = true;
+                      console.log('isInputValid');
+                      console.log(isInputValid);
+                    }  
+                  }
+                }                
+          }
+          
+          var productCount = 0;
+          if(isInputValid && params.ID == null){
+            for(var j = 0; j < myArr.length; j++){  
+                if(!myArr[j].isDelete){
+                  productCount++;
+                  var sku = {
+                      "ItemID" :　myArr[j].ID,
+                      "ImageUrl" : myArr[j].Images[0].substring(1),
+                      "Name" : $('#Name' + j).val(),
+                      "CostPrice" : $('#FixPrice' + j).val(),
+                      "Quantity" : $('#Stock' + j).val(),
+                      "InitialDesignID" : "1234"
+                    }
+                    var skuIDs = [];
+                    console.log(sku);
+                    $.ajax({
+                      headers: { //通过 request 头传递
+                        'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                      },
+                      url: 'http://apitestserverjike.fhlxgzs.cn/marketing_trophy_skus',
+                      dataType: 'json',
+                      data:  JSON.stringify(sku),                  
+                      type: 'post',         
+                      contentType: "application/json",      
+                      success: function (response) {
+                        console.log('response');
+                        console.log(response);
+                        if(response.msg == 'ok'){
+                          skuIDs.push(response.data);
+                          if(skuIDs.length == productCount){
+                            console.log('readyToHit');
+                            console.log('skuIDs');
+                            console.log(skuIDs);
+                            var Name = $('#marketingActivityName').val();
+                            console.log('Name');
+                            console.log(Name);
+                            var e = document.getElementById("UserPlatform");
+                            var selectedPt = e.value;
+                            console.log('selectedPt');
+                            console.log(selectedPt);
+                            var e = document.getElementById("ActiveStatus");
+                            var selectedSt = e.value;
+                            console.log('selectedSt');
+                            console.log(selectedSt);
+                            var allwoProductLink = $("#AllowProductLink").is(":checked");
+                            var defaultAct = $("#DefaultAct").is(":checked"); 
+                            console.log('allwoProductLink');   
+                            console.log(allwoProductLink);
+                            console.log('defaultAct');
+                            console.log(defaultAct);
+                            console.log('adArr');
+                            console.log(adArr);
+
+                            var obj = {
+                              "Name": Name,
+                              "UserPlatform": selectedPt,
+                              "IsActive": (selectedSt == 1)?true:false,
+                              "IsDefault": defaultAct,
+                              "AllowDisplayOfAllItemsJumpLink": allwoProductLink,
+                              "SkuIDs": skuIDs,
+                              "Advertisements": adArr
+                            }
+
+                            $.ajax({
+                              headers: { //通过 request 头传递
+                                'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                              },
+                              url: 'http://apitestserverjike.fhlxgzs.cn/marketing_trophys',
+                              dataType: 'json',
+                              data:  JSON.stringify(obj),                  
+                              type: 'post',         
+                              contentType: "application/json",      
+                              success: function (response) {
+                                console.log('response');
+                                console.log(response);
+                                if(response.msg == 'ok'){
+                                  layer.alert('The Product has been added successfully');
+                                }
+                              },
+                              error: function(response, textStatus, errorThrown){
+                                console.log(response);
+                              }
+                            });
+                          }
+                        }else{
+                          layer.alert('Create SKU-ID went wrong! Please contact Administrator');
+                        }
+                    },
+                    error: function(response, textStatus, errorThrown) {
+                       console.log(response);
+                    }
+                  });
+                  // layer.close(index); //执行关闭 
+              }
+              
+            }
+          }
+
+          var json = JSON.stringify(myArr);         
+          var arrList = document.getElementById('ArrList');
+          arrList.value = json;
+
+          var image = document.getElementById('Image');                  
+          image.value = JSON.stringify(imageList);
+
+
+          var productName = document.getElementById('ProductName');                  
+          productName.value = JSON.stringify(productNameList);
+
+          var costPrice = document.getElementById('CostPrice');
+          costPrice.value = JSON.stringify(costPriceList); 
+           
+          var quantity = document.getElementById('Quantity');
+          quantity.value = JSON.stringify(quantityList);  
+
+          var allwoProductLink = $("#AllowProductLink").is(":checked");
+          var defaultAct = $("#DefaultAct").is(":checked"); 
+          console.log('allwoProductLink');   
+          console.log(allwoProductLink);
+          console.log('defaultAct');
+          console.log(defaultAct);  
+
+          var allowDisplayOfAllItemsJumpLink = document.getElementById('AllowDisplayOfAllItemsJumpLink');
+          allowDisplayOfAllItemsJumpLink.value = JSON.stringify(allwoProductLink); 
+
+          var defaultt = document.getElementById('Default');
+          defaultt.value = JSON.stringify(defaultAct); 
+
+          var ad= document.getElementById('AdArr');
+          ad.value = JSON.stringify(adArr);                          
+        }
+
+        function isInt(n) {
+            return n != "" && !isNaN(n) && Math.round(n) == n;
+        }
+        function isFloat(n){
+            return n != "" && !isNaN(n) && Math.round(n) != n;
+        }     
+      }
+    };
+
+    $('.layui-btn.layuiadmin-btn-usermarketactivity').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+  });
+}
+</script>

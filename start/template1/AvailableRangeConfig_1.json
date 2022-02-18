@@ -1,0 +1,17 @@
+{
+  "default_text_config": {
+    "default_alignment": 1,
+    "default_color": "#000000",
+    "default_font": "庞门正道真贵楷体,Microsoft YaHei",
+    "default_font_size": 10,
+    "default_letter_spacing": 5,
+    "default_line_spacing": 5,
+    "default_reading_orientation": 1,
+    "default_text_orientation": 2,
+    "default_width_of_each_line": 120
+  },
+  "default_add_position": {
+    "x": 0.5,
+    "y": 0.4
+  }
+}

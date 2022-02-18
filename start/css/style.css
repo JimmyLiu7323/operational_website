@@ -1,0 +1,68 @@
+body {
+  margin: 0px;
+}
+
+#design_area {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  /* height: 600px; */
+}
+
+#design_area button {
+  pointer-events: auto;
+  /*重要：允许设计区中所有的Button响应事件*/
+}
+
+#design_area #float_controler_layer {
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  padding: 10px;
+  /* z-index: 20; */
+  pointer-events: none;
+  /*重要：允许设计区中canvas响应事件*/
+}
+
+#design_area #typesetting_canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  /* z-index: 10; */
+}
+
+#design_area .typesetting_background {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  top: 0px;
+  z-index: 0;
+  border-radius: 15px;
+  /*IE*/
+  filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColorStr=#2c3233, endColorStr=#818a93);
+  /*火狐*/
+  background: -moz-linear-gradient(top, #2c3233, #818a93);
+  /*谷歌*/
+  background: -webkit-gradient(
+    linear,
+    0% 0%,
+    0% 100%,
+    from(#2c3233),
+    to(#818a93)
+  );
+  /* Safari & Chrome*/
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-start(0, #2c3233),
+    color-stop(1, #818a93)
+  );
+  /*IE6 & IE7*/
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#2c3233', endColorstr='#818a93');
+  /* IE8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#2c3233', endColorstr='#818a93')";
+}

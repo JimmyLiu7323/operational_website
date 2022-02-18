@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      charset="utf-8"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>排版系统</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/page-decorations.css" />
+    <link rel="stylesheet" type="text/css" href="css/design-window.css" />
+  </head>
+
+  <body bgcolor="#f8f6f3" onload="on_load()">
+    <div id="design_area">
+      <div class="typesetting_background"></div>
+
+      <canvas id="typesetting_canvas"></canvas>
+
+      <div id="float_controler_layer">
+        <div class="trophy-title">大拇指奖杯</div>
+        <div class="trophy-size">规格: <span id="size-txt">7x7x30</span>cm</div>
+        <div class="right-links">
+          <button
+            hover-class="right-button-hover"
+            type="primary"
+            class="btn btn-gray"
+            onclick="print()"
+          >
+            <div class="img-container">
+              <img mode="widthFix" src="images/icons/share.png" />
+            </div>
+            <text>分享</text>
+          </button>
+          <button
+            hover-class="right-button-hover"
+            type="primary"
+            class="btn btn-gray"
+            onclick="save()"
+          >
+            <div class="img-container">
+              <img mode="widthFix" src="images/icons/check.png" />
+            </div>
+            <text>保存</text>
+          </button>
+        </div>
+
+        <div class="left-msgs">
+          <div class="msg-item">
+            <text class="user-name">上善若水: </text>
+            <text class="user-msg"
+              >晶莹剔透，打磨精细，这家做工也太棒了，太喜欢了呢</text
+            >
+          </div>
+        </div>
+
+        <div id="text-window">
+          <div class="window-row">
+            <div class="iText-input-container">
+              <label class="window-label">文本:</label>
+              <div class="window-input">
+                <input id="iText-input" value="中国好爸爸" />
+              </div>
+            </div>
+            <div class="window-btn">
+              <button
+                type="button"
+                class="window-outline-btn"
+                onclick="renewText()"
+              >
+                确定
+              </button>
+            </div>
+          </div>
+          <div class="window-row">
+            <div class="iText-input-container">
+              <label class="window-label">字体:</label>
+              <div class="window-input">
+                <select id="iText-font-family">
+                  <option value="Microsoft SimHei">黑体</option>
+                  <option value="Microsoft SimSun">宋体</option>
+                  <option value="Microsoft LiSu">隶书</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="window-row">
+            <text class="window-text">文字大小由系统自动调整</text>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="jquery-3.5.1.min.js"></script>
+  <script src="fabric.min.js"></script>
+  <script src="js/design-functions.js"></script>
+
+  <script>
+    const domain = "http://apitestserverjike.fhlxgzs.cn/";
+
+    // 注册文案被点击的事件
+    $(document).ready(function () {
+      // canvas.on("mouse:down", function (options) {
+      //   if (options.target) {
+      //     if (
+      //       options.target.id === "trophy-main-title" ||
+      //       options.target.id.indexOf("trophy-sub-text") !== -1
+      //     ) {
+      //       editingTextId = options.target.id;
+      //       setDesignParameter(options);
+      //       $("#text-window").show();
+      //     }
+      //   }
+      // });
+    });
+
+    // fabric.AvailableRange = fabric.util.createClass(fabric.Path, {
+    //   type: "AvailableRange",
+    //   initialize: function (options) {
+    //     options || (options = {});
+    //     this.callSuper("initialize", options);
+    //     this.set("jk_type", options.jk_type || "");
+    //     this.set("jk_available_rang_id", options.jk_available_rang_id || "");
+    //   },
+    //   toObject: function () {
+    //     return fabric.util.object.extend(this.callSuper("toObject"), {
+    //       jk_type: this.get("jk_type"),
+    //       jk_available_rang_id: this.get("jk_available_rang_id"),
+    //     });
+    //   },
+    //   toJSON: function () {
+    //     return fabric.util.object.extend(this.callSuper("toJSON"), {
+    //       jk_type: this.get("jk_type"),
+    //       jk_available_rang_id: this.get("jk_available_rang_id"),
+    //     });
+    //   },
+    //   toSVG: function () {
+    //     return fabric.util.object.extend(this.callSuper("toSVG"), {
+    //       jk_type: this.get("jk_type"),
+    //       jk_available_rang_id: this.get("jk_available_rang_id"),
+    //     });
+    //   },
+    // });
+
+    // fabric.AvailableRange.fromObject = function (object, callback) {
+    //   return fabric.Object._fromObject("AvailableRange", object, callback);
+    // };
+
+    // fabric.AvailableRange.fromObject = function (object, callback, forceAsync) {
+    //   return fabric.Object._fromObject(
+    //     "AvailableRange",
+    //     object,
+    //     callback,
+    //     forceAsync,
+    //     ["points"]
+    //   );
+    // };
+
+    var canvas = (this.__canvas = new fabric.Canvas("typesetting_canvas")); //主体canvas
+    var Template = null; //模板文件中的对象（所有svg层中的对象）
+    // var Contours_all = null; //所有边缘对象
+    // var BasePhotos_all = null; //所有基础图片对象
+    // var AvailableRanges_all = null; //所有可编辑区对象
+    //将模板放入canvas中，并将其全部显示在屏幕中间时，需要对模板进行缩放与位移，需要使用到如下两个变量
+    var CenterViewportTransform = null; //等比例填满屏幕的90%时的视点变换矩阵
+    var CenterZoomSize = null; //缩放的比例
+
+    // function getParameterByName(name, url = window.location.href) {
+    //   name = name.replace(/[\[\]]/g, "\\$&");
+    //   var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    //     results = regex.exec(url);
+    //   if (!results) return null;
+    //   if (!results[2]) return "";
+    //   return decodeURIComponent(results[2].replace(/\+/g, " "));
+    // }
+
+    function on_load() {
+      //  配置canvas基础属性
+      canvas.allowTouchScrolling = false; //不允许触摸滑动canvas
+      canvas.centeredScaling = true; //从中心点进行缩放
+      canvas.enableRetinaScaling = true; //开启高精度缩放
+      canvas.fireRightClick = false; //禁用鼠标右键
+      canvas.stopContextMenu = true; //禁用上下文菜单
+      canvas.uniformScaling = true; //拉动四个角上的把手时等比例缩放
+      //canvas.svgViewportTransformation = false;
+
+      fabric.Object.prototype.transparentCorners = false; //把手设置为不透明
+      fabric.Object.prototype.cornerSize = canvas.width / 40; //设置鼠标控制时把手尺寸
+      fabric.Object.prototype.touchCornerSize = canvas.width / 20; //设置触摸控制时把手尺寸
+      fabric.Object.prototype.originX = fabric.Object.prototype.originY =
+        "center"; //从对象中心点进行缩放
+      fabric.Object.prototype.lockScalingFlip = true; //缩放时禁止将对象翻转镜像
+      // fabric.Object.prototype.originX = 'left'
+      // fabric.Object.prototype.originY = 'top';
+      canvas.snapAngle = 45; //旋转时吸附的角度位置
+      canvas.snapThreshold = null; //旋转时吸附的角度间隔
+      var design_area_dom = document.getElementById("design_area"); //定义canvas所属的dom
+      canvas.setDimensions(
+        {
+          width: design_area_dom.clientWidth,
+          height: design_area_dom.clientHeight * 0.9,
+        }, //下部0.2用作 广告区和小地图
+        { backstoreOnly: false, cssOnly: false }
+      ); //设置canvas的尺寸
+      load_template();
+      //console.debug(contour_obj);
+
+      // resetDesign();
+    }
+
+    function load_template() {
+      fabric.loadSVGFromURL(
+        "template1/All_Layers.svg", //TODO 使用模板ID拼接URL
+        function (objects, options) {
+          //模板以群组形式整块载入
+          var obj = fabric.util.groupSVGElements(objects, options);
+          obj
+            .set({
+              left: canvas.getWidth() / 2,
+              top: canvas.getHeight() / 2,
+              angle: 0,
+            })
+            .setCoords();
+
+          // 将模板缩放后放到中间
+          zoom_width = canvas.width / obj.width;
+          zoom_height = canvas.height / obj.height;
+          CenterZoomSize = Math.min(zoom_width, zoom_height) * 0.9; //留白一部分空间，使得浮动层的控件不会遮挡住设计区
+          canvas.zoomToPoint(
+            { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 },
+            CenterZoomSize
+          );
+          canvas.add(obj).renderAll();
+          CenterViewportTransform = canvas.viewportTransform;
+
+          canvas.getObjects()[0].toActiveSelection(); //拆分开路径
+          canvas.discardActiveObject();
+
+          Template = canvas.getObjects();
+          //按照模板中path的type来区分开照片、轮廓、可绘制区，并进行初始化
+          basePhotos_all = get_basePhotos(); //初始化基础图片
+          for (let i = 0; i < basePhotos_all.length; i++) {
+            const element = basePhotos_all[i];
+            element.set({
+              visible: true,
+              selectable: false,
+            });
+          }
+          contours_all = get_contours(); //初始化轮廓
+          for (let i = 0; i < contours_all.length; i++) {
+            const element = contours_all[i];
+            element.set({
+              visible: false,
+              selectable: false,
+            });
+          }
+          availableRanges_all = get_availableRanges(); //初始化可编辑区
+          for (let i = 0; i < availableRanges_all.length; i++) {
+            const element = availableRanges_all[i];
+            element.set({
+              visible: false,
+              selectable: false,
+            });
+          }
+        },
+        function (objects, options) {
+          if (objects.hasAttributes("jk_type")) {
+            options.set({
+              jk_type: objects.getAttribute("jk_type"),
+            });
+
+            switch (objects.getAttribute("jk_type")) {
+              case "AvailableRange":
+                options.set({
+                  jk_available_rang_id: objects.getAttribute(
+                    "jk_available_rang_id"
+                  ),
+                });
+                // ajax加载可编辑区配置
+                $.ajax({
+                  url:
+                    "template1/AvailableRangeConfig_" +
+                    options.get("jk_available_rang_id") +
+                    ".json",
+                  type: "GET",
+                  cache: false,
+                  dataType: "json",
+                  success: function (result) {
+                    options.set({
+                      jk_available_rang_default_text_config:
+                        result.default_text_config,
+                    });
+                    options.set({
+                      jk_available_rang_default_add_position:
+                        result.default_add_position,
+                    });
+                  },
+                  fail: function (jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.log("Request Failed: " + err);
+                  },
+                });
+                break;
+              case "BasePhoto":
+                break;
+              case "Contour":
+                break;
+              default:
+                options.on({
+                  "touch:drag": function () {
+                    console.debug("touch:drag");
+                  },
+                });
+                break;
+            }
+          }
+        }
+      );
+      canvas.on("mouse:wheel", function (opt) {
+        var delta = opt.e.deltaY;
+        var zoom = canvas.getZoom();
+        zoom *= 0.999 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < CenterZoomSize) zoom = CenterZoomSize;
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+        // var vpt = this.viewportTransform;
+        // if (zoom < 400 / 1000) {
+        //   vpt[4] = 200 - (1000 * zoom) / 2;
+        //   vpt[5] = 200 - (1000 * zoom) / 2;
+        // } else {
+        //   if (vpt[4] >= 0) {
+        //     vpt[4] = 0;
+        //   } else if (vpt[4] < canvas.getWidth() - 1000 * zoom) {
+        //     vpt[4] = canvas.getWidth() - 1000 * zoom;
+        //   }
+        //   if (vpt[5] >= 0) {
+        //     vpt[5] = 0;
+        //   } else if (vpt[5] < canvas.getHeight() - 1000 * zoom) {
+        //     vpt[5] = canvas.getHeight() - 1000 * zoom;
+        //   }
+        // }
+        // console.debug(canvas.calcViewportBoundaries())
+        //console.debug(canvas.restorePointerVpt({"x":100,"y":100}));
+        //canvas.setActiveObject(canvas.item(0), null);
+        //canvas.straightenObject(canvas.item(0));
+        canvas.renderAll();
+        //console.debug(canvas.item(0));
+      });
+
+      //   canvas.setActiveObject(canvas.item(0));
+      // this.__canvases.push(canvas);
+    }
+
+    /**
+     * 获取所有轮廓
+     */
+    function get_contours() {
+      var result = [];
+      for (let i = 0; i < Template.length; i++) {
+        const element = Template[i];
+        if (
+          element.jk_type != null &&
+          element.jk_type.toLowerCase() == "contour"
+        ) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 获取所有基础照片
+     */
+    function get_basePhotos() {
+      var result = [];
+      for (let i = 0; i < Template.length; i++) {
+        const element = Template[i];
+        if (
+          element.jk_type != null &&
+          element.jk_type.toLowerCase() == "basephoto"
+        ) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 获取所有可编辑区域
+     */
+    function get_availableRanges() {
+      var result = [];
+      for (let index = 0; index < Template.length; index++) {
+        const element = Template[index];
+        if (
+          element.jk_type != null &&
+          element.jk_type.toLowerCase() == "availablerange"
+        ) {
+          result.push(element);
+        }
+      }
+      return result;
+    }
+
+    /**
+     * 设置视图模式
+     * normal:正常模式，基础图片可见，轮廓不可见，可编辑区域选框不可见，文案可见
+     * select_available_range:可编辑区选择模式，缩放恢复到填满画布的状态，基础图片不可见，轮廓可见可编辑区域选框可见，文案不可见，
+     */
+    function set_view_model(modelName) {
+      if (modelName === "normal") {
+        base_photos_all = get_basePhotos();
+        for (let i = 0; i < base_photos_all.length; i++) {
+          const element = base_photos_all[i];
+          element.set({ visible: true });
+        }
+        contours_all = get_contours();
+        for (let i = 0; i < contours.length; i++) {
+          const element = contours[i];
+          element.set({ visible: false });
+        }
+        available_ranges_all = get_availableRanges();
+        for (let i = 0; i < available_ranges_all.length; i++) {
+          const element = available_ranges_all[i];
+          element.set({ visible: false });
+        }
+      }
+      if (modelName === "select_available_range") {
+        canvas.discardActiveObject();
+        canvas.setViewportTransform(CenterViewportTransform);
+        base_photos_all = get_basePhotos();
+        for (let i = 0; i < base_photos_all.length; i++) {
+          const element = base_photos_all[i];
+          element.set({ visible: true });
+        }
+        contours_all = get_contours();
+        for (let i = 0; i < contours_all.length; i++) {
+          const element = contours_all[i];
+          element.set({ visible: true });
+        }
+        available_ranges_all = get_availableRanges();
+        for (let i = 0; i < available_ranges_all.length; i++) {
+          const element = available_ranges_all[i];
+          element.set({ visible: true });
+        }
+      }
+    }
+
+    function add_textPath() {
+      availableRange = get_availableRanges()[1];
+      text_config = availableRange.jk_available_rang_default_text_config;
+      add_position = availableRange.jk_available_rang_default_add_position;
+      params = {};
+      params.Text = "中国好妈妈";
+      params.FontFamily = text_config.default_font;
+      params.FontSize = text_config.default_font_size;
+      params.Alignment = text_config.default_alignment;
+      params.Color = text_config.default_color;
+      params.LetterSpacing = text_config.default_letter_spacing;
+      params.LineSpacing = text_config.default_line_spacing;
+      params.TextOrientation = text_config.default_text_orientation;
+      params.ReadingOrientation = text_config.default_reading_orientation;
+      params.WidthOfEachLine = text_config.default_width_of_each_line;
+      var params_json = JSON.stringify(params);
+      // ajax调用文字转曲服务
+      $.ajax({
+        url: domain + "typesetting/convert_to_path",
+        type: "POST",
+        data: params_json,
+        dataType: "html",
+        success: function (result) {
+          fabric.loadSVGFromString(result, function (objects, options) {
+            var obj = fabric.util.groupSVGElements(objects, options);
+            obj
+              .set({
+                left:
+                  availableRange.aCoords.tl.x +
+                  (availableRange.aCoords.tr.x - availableRange.aCoords.tl.x) *
+                    add_position.x,
+                top:
+                  availableRange.aCoords.tl.y +
+                  (availableRange.aCoords.bl.y - availableRange.aCoords.tl.y) *
+                    add_position.y,
+                angle: 0,
+              })
+              .setCoords();
+            canvas.add(obj).renderAll();
+          });
+        },
+        error: function (response, textStatus, errorThrown) {
+          console.log(response);
+          alert(textStatus);
+        },
+        fail: function (jqxhr, textStatus, error) {
+          var err = textStatus + ", " + error;
+          console.log("Request Failed: " + err);
+        },
+      });
+    }
+
+    function print() {
+      console.log("button click");
+      //set_view_model("normal");
+      set_view_model("select_available_range");
+    }
+
+    function save() {
+      canvas.discardActiveObject();
+      canvas.setViewportTransform(CenterViewportTransform);
+      canvas.renderAll();
+      var target_svg = canvas.toSVG({
+        // viewBox: {
+        //     x: 100,
+        //     y: 100,
+        //     width: 200,
+        //     height: 300
+        // }
+        suppressPreamble: true,
+      });
+      console.debug(target_svg);
+    }
+  </script>
+</html>

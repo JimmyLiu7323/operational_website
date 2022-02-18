@@ -1,0 +1,86 @@
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            padding-top: 80px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+
+        .menu {
+            height: 70px;
+            margin-top: -80px;
+        }
+
+        .iframe_typesetting {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            border-width: 0px;
+            box-sizing: border-box;
+        }
+
+.trophies-preview-images{width:100%;margin:0 auto 0;box-sizing:border-box;padding:5px 10px 0;display:flex;align-items:center;flex-wrap:wrap;margin-top:5px}
+#basic-preview-container{width:calc(100% - 30px)}
+#preview-images{width:100%;display:flex;flex-wrap:wrap;align-items:center}
+
+
+.trophies-preview-images .trophy-preview-image{width:48px;height:48px;border-radius:50%;border:2px solid white;overflow:hidden;background-color:#cbcccd;position:relative}
+.trophies-preview-images .trophy-preview-image:nth-child(1){margin-right:10px}
+.trophies-preview-images .trophy-preview-image:nth-child(2){margin-left:0;margin-right:10px}
+.trophies-preview-images .trophy-preview-image:nth-child(3){margin-left:0;margin-right:10px}
+.trophies-preview-images .trophy-preview-image:nth-child(4){margin-left:0;margin-right:10px}
+.trophies-preview-images .trophy-preview-image:nth-child(5){margin-left:0;margin-right:10px}
+.trophies-preview-images .trophy-preview-image img{width:75%;height:75%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}
+.trophies-preview-images div.expand-scroll-btn{width:23px;height:23px;text-align:center;margin-left:auto;background-color:#666666;border-radius:50%;position:relative;display:flex;justify-content:center;margin-top:12px;align-self:self-start}
+.trophies-preview-images div.expand-scroll-btn img{width:50%;height:50%;transition-duration:0.3s;transition-property:transform;align-self:center}
+.trophies-preview-images .trophy-preview-image text{display:block;color:black;margin-top:5px;font-size:.75rem}
+
+
+.trophies-preview-images div.expand-scroll-btn img.expanding{
+	-webkit-transform:rotate(180deg);
+	transform:rotate(180deg);
+}
+
+
+.trophies-preview-names{display:flex;box-sizing:border-box;align-items:center;flex-wrap:wrap}
+.trophies-preview-names text{width:48px;color:black;text-align:center;font-size:.85rem;overflow:hidden;text-overflow:ellipsis}
+.trophies-preview-names text:nth-child(1){margin-right:10px}
+.trophies-preview-names text:nth-child(2){margin-left:0;margin-right:10px}
+.trophies-preview-names text:nth-child(3){margin-left:0;margin-right:10px}
+.trophies-preview-names text:nth-child(4){margin-left:0;margin-right:10px}
+.trophies-preview-names text:nth-child(5){margin-left:0;margin-right:10px}
+
+.list-trophies-container{display:none;position:absolute;z-index:999;width:100%;height:50vh}
+.list-trophies{display:flex;flex-wrap:wrap;background-color:#FFFFFF;border:1px solid rgb(119,119,119);width:calc( 100% - 20px );padding:5px 10px;margin:5px auto;box-sizing:border-box;height:100%;overflow-y:auto}
+
+/* width */
+.list-trophies::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+.list-trophies::-webkit-scrollbar-track {
+  background: #f7f8f9;
+}
+
+/* Handle */
+.list-trophies::-webkit-scrollbar-thumb {
+  background: #0B3954;
+}
+
+/* Handle on hover */
+.list-trophies::-webkit-scrollbar-thumb:hover {
+  background: #336699;
+}
+
+.list-trophies .trophy-item{text-align:center;box-sizing:border-box;width:calc( 50% - 5px );float:left;border:1px solid rgb(119,119,119);margin-bottom:5px;padding:10px}
+.list-trophies .trophy-item:nth-child(odd){margin-right:5px}
+.list-trophies .trophy-item:nth-child(even){margin-left:5px}
+.list-trophies .trophy-item img.trophy-first-image{width:80%}
+.list-trophies .trophy-item .trophy-price{font-size:1.1rem;color:#FF1654;display:block;text-align:left}
+.list-trophies .trophy-item .trophy-name{font-size:.85rem;color:#3C3C3C;display:block;text-align:left}
+
+.list-trophies .show-all-btn{width:100%;background-color:transparent;color:rgb(119,119,119);border:0;font-size:.7rem;box-shadow:none;padding-bottom:0;padding-top:10px}

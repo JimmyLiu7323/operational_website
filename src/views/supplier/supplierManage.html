@@ -1,0 +1,243 @@
+
+
+<title>网站用户</title>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">供应商</a>
+    <a><cite>供应商管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="layadmin-supplier-formlist">
+      <div class="layui-form-item">
+
+        <div class="layui-inline">
+          <label class="layui-form-label">类目</label>
+          <div class="layui-input-block">
+            <select id="catalog" name="catalog">
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">供应商编号</label>
+          <div class="layui-input-block">
+            <input type="text" name="id" id="supplierId" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">供应商名称</label>
+          <div class="layui-input-block">
+            <input type="text" name="name" id="supplierName" placeholder="请输入" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <button class="layui-btn layuiadmin-btn-usersupplier"  data-type="reload" lay-submit lay-filter="LAY-supplier-search">
+            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="layui-card-body">
+      <div style="padding-bottom: 10px;">
+<!--         <button class="layui-btn layuiadmin-btn-usersupplier" data-type="batchdel">删除</button> -->
+        <button class="layui-btn layuiadmin-btn-usersupplier" data-type="add">添加</button>
+      </div>
+      
+      <table id="LAY-supplier-manage" lay-filter="LAY-supplier-manage"></table>
+      <script type="text/html" id="imgTpl"> 
+        <img style="display: inline-block; width: 50%; height: 100%;" src= {{ d.avatar }}>
+      </script> 
+      <script type="text/html" id="table-usersupplier-webuser">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="view"><i class="layui-icon layui-icon-delete"></i>详情</a>
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+      </script>
+    </div>
+  </div>
+</div>
+<script>
+layui.use('usersupplier', layui.factory('usersupplier')).use(['admin', 'usersupplier', 'table'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,view = layui.view
+  ,table = layui.table
+  ,form = layui.form;
+  
+  form.render(null, 'layadmin-supplier-formlist')
+
+  admin.req({
+      headers: { //通过 request 头传递
+        'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+      },
+      url: 'http://apitestserverjike.fhlxgzs.cn/categorys',
+      type: 'get',
+      data: {
+      }
+      ,done: function(result){
+        console.log(result);
+          $.each(result.data, function(index, item) {
+              $('#catalog')
+                  .append(new Option(item.Name, item.ID));
+          });
+          layui.form.render("select");
+      }
+    });
+
+  //监听搜索
+  form.on('submit(LAY-supplier-search)', function(data){    
+    var id = $('#supplierId').val();
+    var name = $('#supplierName').val();
+    var catalog = $("select[name='catalog']").val();
+    var dic = {};
+    
+    if (id != '') {
+      dic['supplier_id'] = id;
+    }
+    else if(name != ''){
+      dic['supplier_name'] = name;
+    }
+    else if(catalog != ''){
+      dic['category_id'] = catalog;
+    }
+    else if (Object.keys(dic).length == 0) {
+          dic = null;
+    }
+    //执行重载
+    table.reload('LAY-supplier-manage', {
+      where: dic
+    });
+  });
+
+
+
+  //事件
+  var active = {
+    batchdel: function(){
+      var checkStatus = table.checkStatus('LAY-supplier-manage')
+      ,checkData = checkStatus.data; //得到选中的数据
+
+      if(checkData.length === 0){
+        return layer.msg('请选择数据');
+      }
+      
+      layer.prompt({
+        formType: 1
+        ,title: '敏感操作，请验证口令'
+      }, function(value, index){
+        layer.close(index);
+        
+        layer.confirm('确定删除吗？', function(index) {
+          
+          //执行 Ajax 后重载
+          /*
+          admin.req({
+            url: 'xxx'
+            //,……
+          });
+          */
+          table.reload('LAY-supplier-manage');
+          layer.msg('已删除');
+        });
+      });
+    }
+    ,add: function(){
+      admin.popup({
+        title: '添加供应商'
+        ,area: ['450px', '400px']
+        ,id: 'LAY-popup-supplier-add'
+        ,success: function(layero, index){
+          view(this.id).render('supplier/userform').done(function(){
+            form.render(null, 'layuiadmin-form-supplier');            
+            //监听提交
+            form.on('submit(LAY-supplier-submit)', function(data){                         
+              data.field.CategoryID = parseInt(data.field.CategoryID);
+              var json = JSON.stringify(data.field); 
+              var jsonObj = JSON.parse(json);              
+              //提交 Ajax 成功后，关闭当前弹层并重载表格              
+              $.ajax({
+                  headers: { //通过 request 头传递
+                    'Authorization': 'Bearer ' + layui.data('layuiAdmin').access_token
+                  },
+                  url: 'http://apitestserverjike.fhlxgzs.cn/suppliers',
+                  dataType: 'json',
+                  data: json,                  
+                  type: "post",                
+                  success: function (response) {
+                    console.log('suppliersResponse');
+                    console.log(response);
+
+                    if(response.msg == 'ok'){                      
+                        layer.open({
+                        content: jsonObj.Name + ' has been successfully added'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }    
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });
+                    }else{
+                      layer.open({
+                        content: 'Something went wrong when saving the record! Please contact Administrator'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });                     
+                    }
+                },
+                error: function(response, textStatus, errorThrown) {
+                   console.log(response);
+                   layer.open({
+                        content: 'Something went wrong when saving the record! Please contact Administrator'
+                        ,btn: ['Confirm']
+                        ,yes: function(index, layero){
+                          //按钮【按钮一】的回调
+                            console.log('1 clicked');
+                            window.parent.location.reload();
+                        }
+                        ,cancel: function(){ 
+                          //右上角关闭回调
+                          console.log('2 clicked');
+                          window.parent.location.reload();
+                          //return false 开启该代码可禁止点击该按钮关闭
+                        }
+                      });
+                }
+              });
+              layui.table.reload('LAY-supplier-manage'); //重载表格
+              layer.close(index); //执行关闭 
+            });
+          });
+        } 
+      });
+    }
+  };
+
+  
+  $('.layui-btn.layuiadmin-btn-usersupplier').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>
